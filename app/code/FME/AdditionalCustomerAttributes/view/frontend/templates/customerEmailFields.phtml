@@ -1,0 +1,54 @@
+<!--
+/**
+ *
+ * @category : FME
+ * @Package  : FME_AdditionalCustomerAttributes
+ * @Author   : FME Extensions <support@fmeextensions.com>
+ * @copyright Copyright 2018 © fmeextensions.com All right reserved
+ * @license https://fmeextensions.com/LICENSE.txt
+ */
+-->
+<?php
+$helper = $this->helper('FME\AdditionalCustomerAttributes\Helper\Data');
+$attributeHelper = $this->helper('FME\AdditionalCustomerAttributes\Helper\Attributes');
+$customerId = $block->getCustomer()->getId();
+if ($customerId > 0) :
+    $fields = $attributeHelper->getAllAttributes(1, true, $customerId, true);
+?>
+    <?php if (!empty($fields)) : ?>
+    <div class="block block-order-details-comments">
+        <div class="block-title"><strong><?php /* @escapeNotVerified */ echo $helper->getHeading() ?></strong></div>
+        <div class="block-content">
+        <table class="admin__table-secondary order-account-information-table">
+            <?php $i = 1;
+            $total = count($fields);
+            foreach ($fields as $field) :
+                $value = $attributeHelper->getValue($field);
+            ?>
+            <?php if ($i%2 != 0) : ?>
+                <tr>
+            <?php endif; ?>
+                <td><?php /* @escapeNotVerified */ echo $field->getStorelabel() ?> : </td>
+                <td>
+                    <?php
+                    if (in_array($field->getFrontendInput(), ['select','multiselect','radio','checkbox'])) {
+                        /* @escapeNotVerified */ echo $attributeHelper->getOptionValueById($value, $block->getCustomer()->getStoreId());
+                    } elseif ($field->getFrontendInput() == "boolean") {
+                        /* @escapeNotVerified */ echo $value == 1?__('Yes'):__('No');
+                    } else {
+                        /* @escapeNotVerified */ echo $value;
+                    }
+                    ?>
+                </td>
+            <?php if ($i == $total && $i%2 != 0) : ?>
+                <td>&nbsp;</td><td>&nbsp;</td>
+            <?php elseif ($i%2 == 0 || $i == $total) : ?>
+                </tr>
+            <?php endif;
+            $i++; ?>
+            <?php endforeach; ?>
+        </table>
+        </div>
+    </div>
+    <?php endif; ?>
+<?php endif; ?>

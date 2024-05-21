@@ -1,0 +1,7 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Backend:etc/menu.xsd">
+    <menu>
+        <add id="Prasanna_Invitecode::invitecode" title="Invite Code" translate="title" module="Prasanna_Invitecode" parent="Magento_Backend::content" sortOrder="50" dependsOnModule="Prasanna_Invitecode" resource="Prasanna_Invitecode::index" />
+        <add id="Prasanna_Invitecode::index" title="List" translate="title" module="Prasanna_Invitecode" parent="Prasanna_Invitecode::index" sortOrder="10" dependsOnModule="Prasanna_Invitecode" action="invitecode/index" resource="Prasanna_Invitecode::index" />
+    </menu>
+</config>

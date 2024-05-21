@@ -1,0 +1,15 @@
+/**
+ *
+ * @category : FME
+ * @Package  : FME_AdditionalCustomerAttributes
+ * @Author   : FME Extensions <support@fmeextensions.com>
+ * @copyright Copyright 2018 © fmeextensions.com All right reserved
+ * @license https://fmeextensions.com/LICENSE.txt
+ */
+.field .control._with-tooltip input, .field .control._with-tooltip textarea, .field .control._with-tooltip select, .field .control._with-tooltip fieldset  {
+    margin-right: 10px;
+    width: calc(100% - 36px);
+}
+.field .control fieldset.coaf input {
+    width: 10px;
+}

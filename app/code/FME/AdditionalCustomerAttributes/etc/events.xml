@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<!--
+/**
+ *
+ * @category : FME
+ * @Package  : FME_AdditionalCustomerAttributes
+ * @Author   : FME Extensions <support@fmeextensions.com>
+ * @copyright Copyright 2018 © fmeextensions.com All right reserved
+ * @license https://fmeextensions.com/LICENSE.txt
+ */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Event/etc/events.xsd">
+    <event name="customer_save_before">
+        <observer name="fme_customersave_before" instance="FME\AdditionalCustomerAttributes\Observer\CustomerSaveBefore" />
+    </event>
+
+    <event name="customer_save_after">
+        <observer name="fme_customersave_after" instance="FME\AdditionalCustomerAttributes\Observer\CustomerSaveAfter" />
+    </event>
+</config>

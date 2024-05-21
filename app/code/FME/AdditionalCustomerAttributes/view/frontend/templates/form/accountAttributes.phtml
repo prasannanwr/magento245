@@ -1,0 +1,200 @@
+<?php
+/**
+ *
+ * @category : FME
+ * @Package  : FME_AdditionalCustomerAttributes
+ * @Author   : FME Extensions <support@fmeextensions.com>
+ * @copyright Copyright 2018 © fmeextensions.com All right reserved
+ * @license https://fmeextensions.com/LICENSE.txt
+ */
+/* @var $block \FME\AdditionalCustomerAttributes\Block\Attributes */
+?>
+<?php
+$attributes = $block->getAvailableAttributes(3, true);
+$allattributes = $attributes->getData();
+$showButton = false;
+if (!empty($attributes)) : ?>
+<form action="<?php /* @escapeNotVerified */ echo $block->getPostUrl(); ?>" method="post"
+    enctype="multipart/form-data"  class="form" id="aca-form"
+    data-hasrequired="* Required Fields"
+    data-mage-init='{"validation":{}}'>
+<fieldset class="fieldset additional-customer-attributes">
+    <?php foreach ($attributes as $attribute) :?>
+        <?php if (!$block->isHidden($attribute)) :
+            $showButton = true;
+            $element = $block->getElement($attribute);?>
+            <?php if ($element): ?>
+                <?php /* @escapeNotVerified */ echo $element;?>
+                <?php if($attribute->getFmeDependable() && $attribute->getFmeDcode() != ""
+                 && array_search($attribute->getFmeDcode(), array_column( $allattributes, 'attribute_code'))): ?>
+                    <script type="text/javascript">
+                        require(['jquery'], function($){
+                            $(function() {
+                                function findOne(haystack, arr) {
+                                    if(haystack !== undefined) {
+                                        return arr.some(function (v) {
+                                            return haystack.indexOf(v) >= 0;
+                                        });
+                                    }
+                                    return false;
+                                };
+                                function checkDependency() {
+                                    var inputType = $('.field-<?php echo $attribute->getFmeDcode(); ?> [name^=fme_<?php echo $attribute->getFmeDcode(); ?>]').attr('type');
+                                    var parentValues = '';
+                                   
+                                    if (inputType == 'checkbox' || inputType == 'radio') {
+                                        parentValues = new Array();
+                                        $.each($('.field-<?php echo $attribute->getFmeDcode(); ?> [acode=<?php echo $attribute->getFmeDcode(); ?>]:checked'), function() {
+                                          parentValues.push($(this).val());
+                                        });
+                                    } else {
+                                        parentValues = $('.field-<?php echo $attribute->getFmeDcode(); ?> [name=fme_<?php echo $attribute->getFmeDcode(); ?>]').val();
+                                    }
+                                    var found = findOne(parentValues, watchValues) ? 'true' : 'false';
+                                    if(found == 'true') {
+                                        $('.field-<?php echo $attribute->getAttributeCode(); ?>').show();
+                                        $('.field-<?php echo $attribute->getAttributeCode(); ?> [acode=<?php echo $attribute->getAttributeCode(); ?>]').prop('disabled', false);
+                                        if($('#<?php echo $attribute->getAttributeCode(); ?>_value')){
+                                            $('#<?php echo $attribute->getAttributeCode(); ?>_value').prop('disabled', false);
+                                        }
+                                    } else {
+                                        $('.field-<?php echo $attribute->getAttributeCode(); ?>').hide();
+                                        $('.field-<?php echo $attribute->getAttributeCode(); ?> [acode=<?php echo $attribute->getAttributeCode(); ?>]').prop('disabled', true);
+                                        if($('#<?php echo $attribute->getAttributeCode(); ?>_value')){
+                                            $('#<?php echo $attribute->getAttributeCode(); ?>_value').prop('disabled', true);
+                                        }
+                                    }
+                                };
+                                var watchValues = <?php echo json_encode(explode(",", $attribute->getFmeDvalue())); ?>;
+                                
+                                if ($('.field-<?php echo $attribute->getFmeDcode(); ?> [acode=<?php echo $attribute->getFmeDcode(); ?>]')) {
+                                    if ($('.field-<?php echo $attribute->getFmeDcode(); ?> [acode=<?php echo $attribute->getFmeDcode(); ?>]') && $('.field-<?php echo $attribute->getFmeDcode(); ?> [acode=<?php echo $attribute->getFmeDcode(); ?>]').prop('disabled')) {
+                                        $('.field-<?php echo $attribute->getAttributeCode(); ?>').hide();
+                                        $('.field-<?php echo $attribute->getAttributeCode(); ?> [acode=<?php echo $attribute->getAttributeCode(); ?>]').prop('disabled', true);
+                                        if($('#<?php echo $attribute->getAttributeCode(); ?>_value')){
+                                            $('#<?php echo $attribute->getAttributeCode(); ?>_value').prop('disabled', true);
+                                        }
+                                    } else if ($('.field-<?php echo $attribute->getFmeDcode(); ?> [acode=<?php echo $attribute->getFmeDcode(); ?>]') && ($('.field-<?php echo $attribute->getFmeDcode(); ?> [acode=<?php echo $attribute->getFmeDcode(); ?>]').prop('disabled') || !$('.field-<?php echo $attribute->getFmeDcode(); ?> [acode=<?php echo $attribute->getFmeDcode(); ?>]').is(':visible'))) {
+                                        $('.field-<?php echo $attribute->getAttributeCode(); ?>').hide();
+                                        $('.field-<?php echo $attribute->getAttributeCode(); ?> [acode=<?php echo $attribute->getAttributeCode(); ?>]').prop('disabled', true);
+                                        if($('#<?php echo $attribute->getAttributeCode(); ?>_value')){
+                                            $('#<?php echo $attribute->getAttributeCode(); ?>_value').prop('disabled', true);
+                                        }
+                                    } else if ($('.field-<?php echo $attribute->getFmeDcode(); ?> [acode=<?php echo $attribute->getFmeDcode(); ?>]') && (!$('.field-<?php echo $attribute->getFmeDcode(); ?> [acode=<?php echo $attribute->getFmeDcode(); ?>]').prop('disabled') && $('.field-<?php echo $attribute->getFmeDcode(); ?> [acode=<?php echo $attribute->getFmeDcode(); ?>]').is(':visible'))) {
+                                        checkDependency();
+                                    }
+                                    $('.field-<?php echo $attribute->getFmeDcode(); ?> [acode=<?php echo $attribute->getFmeDcode(); ?>]').on('change click',function(){
+                                        checkDependency();
+                                    });
+                                    var observer<?php echo $attribute->getFmeDcode(); ?> = new MutationObserver(function(mutations) {
+                                        if ($('.field-<?php echo $attribute->getFmeDcode(); ?> [acode=<?php echo $attribute->getFmeDcode(); ?>]') && (!$('.field-<?php echo $attribute->getFmeDcode(); ?> [acode=<?php echo $attribute->getFmeDcode(); ?>]').prop('disabled') && $('.field-<?php echo $attribute->getFmeDcode(); ?> [acode=<?php echo $attribute->getFmeDcode(); ?>]').is(':visible'))) {
+                                            checkDependency();
+                                        } else {
+                                            $('.field-<?php echo $attribute->getAttributeCode(); ?>').hide();
+                                            $('.field-<?php echo $attribute->getAttributeCode(); ?> [acode=<?php echo $attribute->getAttributeCode(); ?>]').prop('disabled', true);
+                                            if($('#<?php echo $attribute->getAttributeCode(); ?>_value')){
+                                                $('#<?php echo $attribute->getAttributeCode(); ?>_value').prop('disabled', true);
+                                            }
+                                        }
+                                    });
+                                    var target<?php echo $attribute->getFmeDcode(); ?> = document.querySelector('.field-<?php echo $attribute->getFmeDcode(); ?> [acode=<?php echo $attribute->getFmeDcode(); ?>]');
+                                    observer<?php echo $attribute->getFmeDcode(); ?>.observe(target<?php echo $attribute->getFmeDcode(); ?>, {
+                                        attributes: true
+                                    });
+                                }
+                            });
+                        });
+                    </script>
+                <?php endif; ?>
+            <?php endif; ?>
+        <?php endif; ?>
+    <?php endforeach; ?>
+</fieldset>
+<?php if ($showButton == true) : ?>
+    <div class="actions-toolbar">
+        <div class="primary">
+            <input type="hidden" name="hideit" id="hideit" value="" />
+            <button type="submit" title="Submit" class="action submit primary">
+                <span>Submit</span>
+            </button>
+        </div>
+    </div>
+<?php else :
+ /* @escapeNotVerified */ echo __('Sorry No fields available for now');
+endif; ?>
+</form>
+<script>
+    require([
+        'jquery',
+        'jquery/ui',
+        'jquery/validate',
+        'mage/translate'
+    ], function ($) {
+    //Validate Image FileSize        
+    $.validator.addMethod(
+        'validate-filesize', function (v, elm) {
+            var allowed  = $(elm).attr('size');
+            var maxSize = allowed * 1048576;
+
+            if (navigator.appName == "Microsoft Internet Explorer") {
+                if (elm.value) {
+                    var oas = new ActiveXObject("Scripting.FileSystemObject");
+                    var e = oas.getFile(elm.value);
+                    var size = e.size;
+                }
+            } else {
+                if (elm.files[0] != undefined) {
+                    size = elm.files[0].size;
+                }
+            }
+            // /alert(maxSize);alert(size);
+            if (size != undefined && size > maxSize) {
+                return false;
+            }
+            return true;
+        }, $.mage.__('The file size should not exceed the mentioned size'));
+    //Validate Image Extensions
+    $.validator.addMethod(
+        'validate-fileextensions', function (v, elm) {
+            var extensions = $(elm).attr('types').split(",");
+            if (!v) {
+                return true;
+            }
+            with (elm) {
+                var ext = value.substring(value.lastIndexOf('.') + 1);
+                for (i = 0; i < extensions.length; i++) {
+                    if (ext == extensions[i]) {
+                        return true;
+                    }
+                }
+            }
+            return false;
+        }, $.mage.__('Disallowed file type.'));
+
+    //Validate Image Width and Height
+    $.validator.addMethod(
+        'validate-image-height-width', function (v, elm) {
+
+            if (!v) {
+                return true;
+            }
+            with (elm) {
+                var file, img;
+                if ((file = elm.files[0])) {
+                    img = new Image();
+                    img.onload = function () {
+                        var height = this.height,
+                                width = this.width;
+                        if (height > 100 || width > 100) {
+                            return false;
+                        }
+
+                        return true;
+                    };
+                }
+            }
+            return false;
+        }, $.mage.__('Height and Width must not exceed 100px.'));
+});
+</script>
+<?php endif; ?>

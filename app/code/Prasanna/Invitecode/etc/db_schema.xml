@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<schema xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Setup/Declaration/Schema/etc/schema.xsd">
+    <table name="attribute_weight" resource="default" engine="innodb" comment="Attribute Weight Table">
+        <column xsi:type="int" name="entity_id" nullable="false" identity="true" unsigned="true" comment="Entity ID"/>
+        <column xsi:type="varchar" name="attribute_code" nullable="false" length="255" comment="Attribute code"/>
+        <column xsi:type="varchar" name="option_id" nullable="true" length="255" comment="Option Id"/>
+        <column xsi:type="smallint" name="weightage" nullable="true" comment="Weight of the item"/>
+        <constraint xsi:type="primary" referenceId="PRIMARY">
+            <column name="entity_id"/>
+        </constraint>
+    </table>
+</schema>

@@ -1,0 +1,23 @@
+{
+  "name": "fme/additional-customer-attributes",
+  "description": "Additional Customer Attributes",
+  "type": "magento2-module",
+  "version": "1.0.4",
+  "license": [
+    "proprietary"
+  ],
+  "authors": [
+    {
+      "name": "Tahir Mehmood",
+      "email": "tahir.mehmood@unitedsol.net"
+    }
+  ],
+  "autoload": {
+    "files": [
+      "registration.php"
+    ],
+    "psr-4": {
+      "FME\\AdditionalCustomerAttributes\\": ""
+    }
+  }
+}

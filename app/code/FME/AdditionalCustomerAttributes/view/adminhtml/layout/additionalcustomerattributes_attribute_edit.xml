@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+<!--
+/**
+ *
+ * @category : FME
+ * @Package  : FME_AdditionalCustomerAttributes
+ * @Author   : FME Extensions <support@fmeextensions.com>
+ * @copyright Copyright 2018 © fmeextensions.com All right reserved
+ * @license https://fmeextensions.com/LICENSE.txt
+ */
+-->
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" layout="admin-2columns-left" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <body>
+        <referenceContainer name="left">
+            <block class="FME\AdditionalCustomerAttributes\Block\Adminhtml\Attribute\Edit\Tabs" name="attribute_edit_tabs">
+                <container label="Main" name="main">
+                    <block class="FME\AdditionalCustomerAttributes\Block\Adminhtml\Attribute\Edit\Tab\Main" as="base"/>
+                    <block class="FME\AdditionalCustomerAttributes\Block\Adminhtml\Attribute\Edit\Options\Options" as="advanced"/>
+                    <block class="FME\AdditionalCustomerAttributes\Block\Adminhtml\Attribute\Edit\Tab\Advanced" as="options"/>
+                </container>
+                <block class="Magento\Eav\Block\Adminhtml\Attribute\Edit\Options\Labels" as="labels"/>
+                <block class="FME\AdditionalCustomerAttributes\Block\Adminhtml\Attribute\Edit\Tab\Front" as="front"/>
+                <block class="FME\AdditionalCustomerAttributes\Block\Adminhtml\Attribute\Edit\Tab\Depends" as="depends"/>
+            </block>
+        </referenceContainer>
+        <referenceContainer name="content">
+            <block class="FME\AdditionalCustomerAttributes\Block\Adminhtml\Attribute\Edit" name="attribute_edit_content"/>
+        </referenceContainer>
+        <referenceContainer name="js">
+            <block class="Magento\Backend\Block\Template" name="checkoutorderattribute_edit_js" template="FME_AdditionalCustomerAttributes::attribute/js.phtml"/>
+        </referenceContainer>
+    </body>
+</page>

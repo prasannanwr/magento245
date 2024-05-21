@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+<!--
+/**
+ *
+ * @category : FME
+ * @Package  : FME_AdditionalCustomerAttributes
+ * @Author   : FME Extensions <support@fmeextensions.com>
+ * @copyright Copyright 2018 © fmeextensions.com All right reserved
+ * @license https://fmeextensions.com/LICENSE.txt
+ */
+ -->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Store:etc/config.xsd">
+    <default>
+        <fme_additionalcustomerattributes>
+        </fme_additionalcustomerattributes>
+        <general>
+            <validator_data>
+                <input_types>
+                    <checkbox>checkbox</checkbox>
+                    <radio>radio</radio>
+                    <file>file</file>
+                    <image>image</image>
+                    <video>video</video>
+                    <audio>audio</audio>
+                </input_types>
+            </validator_data>
+        </general>
+    </default>
+</config>

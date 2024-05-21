@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<!--
+/**
+ *
+ * @category : FME
+ * @Package  : FME_AdditionalCustomerAttributes
+ * @Author   : FME Extensions <support@fmeextensions.com>
+ * @copyright Copyright 2018 © fmeextensions.com All right reserved
+ * @license https://fmeextensions.com/LICENSE.txt
+ */
+-->
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <update handle="customer_account"/>
+    <body>
+        <referenceBlock name="customer_account_navigation">
+            <block class="Magento\Framework\View\Element\Html\Link\Current" name="customer-account-navigation-fields-products-link-custom">
+                <arguments>
+                    <argument name="path" xsi:type="string">additionalcustomerattributes/customer/attributes</argument>
+                    <argument name="label" xsi:type="helper" helper="FME\AdditionalCustomerAttributes\Helper\Data::getHeading"/>
+                </arguments>
+            </block>
+        </referenceBlock>
+   </body>
+</page>
+

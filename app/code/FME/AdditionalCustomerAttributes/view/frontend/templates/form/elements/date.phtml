@@ -1,0 +1,26 @@
+<?php
+/**
+ *
+ * @category : FME
+ * @Package  : FME_AdditionalCustomerAttributes
+ * @Author   : FME Extensions <support@fmeextensions.com>
+ * @copyright Copyright 2018 © fmeextensions.com All right reserved
+ * @license https://fmeextensions.com/LICENSE.txt
+ */
+/** @var $block \FME\AdditionalCustomerAttributes\Block\Element\Date */
+?>
+<?php
+$ElementClass = 'field date field-' . $block->getAttributeId();
+$ElementClass .= $block->isRequired() ? ' required' : '';
+?>
+<div class="<?php /* @escapeNotVerified */ echo $ElementClass; ?>">
+    <label class="label" for="<?php echo $block->getAttributeId()?>">
+    	<span><?php /* @escapeNotVerified */ echo $block->getLabel() ?></span>
+    </label>
+    <div class="control customer-dob">
+        <?php echo $block->getDateElementHtml(); ?>
+        <?php if ($_tooltip = $block->getTooltip()) : ?>
+        <div class="note"><?php /* @escapeNotVerified */ echo $_tooltip; ?></div>
+        <?php endif; ?>
+    </div>
+</div>

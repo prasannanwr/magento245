@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+<!--
+/**
+ *
+ * @category : FME
+ * @Package  : FME_AdditionalCustomerAttributes
+ * @Author   : FME Extensions <support@fmeextensions.com>
+ * @copyright Copyright 2018 © fmeextensions.com All right reserved
+ * @license https://fmeextensions.com/LICENSE.txt
+ */
+ -->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Backend:etc/menu.xsd">
+    <menu>
+        <update id="FME_Extensions::fmeextensions" 
+                title="FME Extensions" 
+                module="Magento_Backend" 
+                sortOrder="70" 
+                resource="FME_Extensions::fmeextensions"/>
+        <add id="FME_AdditionalCustomerAttributes::attributes"
+            title="Additional Customer Registration Fields"
+            translate="title"
+            module="FME_AdditionalCustomerAttributes"
+            sortOrder="30"
+            parent="FME_Extensions::fmeextensions"
+            action="additionalcustomerattributes/attribute/"
+            resource="FME_AdditionalCustomerAttributes::attributes"/>
+    </menu>
+</config>
