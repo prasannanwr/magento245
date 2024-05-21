@@ -10,6 +10,22 @@ $attributeCode = 'cg_radio';
 // Check if the attribute is a checkbox type
 $objectManager =  \Magento\Framework\App\ObjectManager::getInstance();
 //$storeManager = $objectManager->get('\Magento\Store\Model\StoreManagerInterface');
+$attributeRepository = $objectManager->create('\Magento\Eav\Block\Adminhtml\Attribute\Edit\Main\AbstractMain');
+$optionCollection = $objectManager->create('\Prasanna\Invitecode\Model\ResourceModel\Attribute\Collection');
+//$attribute = $attributeRepository->getAttributeObject();
+//$currentAttributeCode = $attribute->getAttributeCode();
+$currentAttributeCode = "test_multiselect";
+$optionCollection = $optionCollection->addAttributeToFilter('attribute_code', $currentAttributeCode);
+$optionArr = array();
+foreach ($optionCollection as $option):
+    $item = array("id" => $option->getData('option_id'),
+        "weight" => $option->getData('weightage'));
+    array_push($optionArr, $item);
+endforeach;
+foreach ($optionArr as $option){
+    var_dump($option['id']);exit;
+}
+exit;
 $attributeRepository = $objectManager->create('\Magento\Eav\Model\Config');
 $optionCollectionFactory = $objectManager->create('\Magento\Eav\Model\ResourceModel\Entity\Attribute\Option\CollectionFactory');
 $attribute = $attributeRepository->getAttribute('additionalcustomerattributes', $attributeCode);

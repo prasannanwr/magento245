@@ -14,20 +14,6 @@
 
 $stores = $block->getStoresSortedBySortOrder();
 
-$objectManager =  \Magento\Framework\App\ObjectManager::getInstance();
-$attributeRepository = $objectManager->create('\Magento\Eav\Block\Adminhtml\Attribute\Edit\Main\AbstractMain');
-$optionCollection = $objectManager->create('\Prasanna\Invitecode\Model\ResourceModel\Attribute\Collection');
-$attribute = $attributeRepository->getAttributeObject();
-$currentAttributeCode = $attribute->getAttributeCode();
-
-$optionCollection = $optionCollection->addAttributeToFilter('attribute_code', $currentAttributeCode);
-$optionArr = array();
-//foreach ($optionCollection as $option):
-//    $item = array("id" => $option->getData('option_id'),
-//                  "weight" => $option->getData('weightage'));
-//    array_push($optionArr, $item);
-//endforeach;
-//var_dump($optionArr[0]['id']);exit;
 ?>
 <fieldset class="fieldset">
     <legend class="legend">
@@ -170,9 +156,20 @@ $optionArr = array();
 </fieldset>
 <!-- custom script added for weightage values -->
 <script type="text/javascript">
-    require(['jquery','underscore','mage/url'], function($,_,urlBuilder){
+    require(['jquery','underscore','mage/url'], function($, _, urlBuilder){
         $(document).ready(function() {
-//var_dump($optionArr[0]['id']);exit;git
+            //console.log(urlBuilder.build('invitecode/index'));
+            // var dataToSend = { id: 123, name: 'Sample Item' };
+            // var ajaxUrl = urlBuilder.build('invitecode/ajax/index');
+            var ajaxUrl = 'http://local.magento245.com/admin_1lmmlj/invitecode/ajax/index');
+            console.log(ajaxUrl);
+            $.ajax({
+                url: ajaxUrl,
+                type: 'POST',
+                dataType: 'json'
+            }).done(function(data) {
+                console.log(data);
+            });
         });
     });
 </script>
