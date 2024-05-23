@@ -2,9 +2,11 @@
 
 namespace Prasanna\Invitecode\Observer;
 
+use Magento\Catalog\Model\ResourceModel\Eav\Attribute;
 use Magento\Customer\Api\CustomerRepositoryInterface;
 use Magento\Customer\Model\GroupFactory;
 use Magento\Eav\Model\Config;
+use Magento\Eav\Model\EntityFactory;
 use Magento\Eav\Model\ResourceModel\Entity\Attribute\Option\CollectionFactory;
 use Magento\Framework\Event\Observer;
 use Magento\Framework\Event\ObserverInterface;
@@ -46,6 +48,14 @@ class CustomerSaveAfter implements ObserverInterface
 
     private $groupFactory;
 
+    private $eavEntityFactory;
+
+    private $resource;
+
+    private $catalogAttribute;
+    private $catalogAttributeResource;
+    private $attributeHelper;
+
     /**
      * @param \Magento\Framework\App\Config\ScopeConfigInterface $scopeConfiguration
      */
@@ -57,7 +67,12 @@ class CustomerSaveAfter implements ObserverInterface
         StoreManagerInterface $storeManager,
         Config $eavConfig,
         CollectionFactory $optionCollectionFactory,
-        GroupFactory $groupFactory
+        GroupFactory $groupFactory,
+        EntityFactory $entityFactory,
+        \FME\AdditionalCustomerAttributes\Model\ResourceModel\CustomerValues $resource,
+        Attribute $catalogAttribute,
+        \Prasanna\Invitecode\Model\ResourceModel\Attribute $catalogAttributeResource,
+        \Prasanna\Invitecode\Helper\Attribute $attributeHelper
     ) {
         $this->request = $request;
         $this->customerRepository = $customerRepository;
@@ -69,6 +84,11 @@ class CustomerSaveAfter implements ObserverInterface
         $this->eavConfig = $eavConfig;
         $this->optionCollectionFactory = $optionCollectionFactory;
         $this->groupFactory = $groupFactory;
+        $this->eavEntityFactory = $entityFactory;
+        $this->resource = $resource;
+        $this->catalogAttribute = $catalogAttribute;
+        $this->catalogAttributeResource = $catalogAttributeResource;
+        $this->attributeHelper = $attributeHelper;
     }
     /**
      * @param Observer $observer
@@ -83,9 +103,29 @@ class CustomerSaveAfter implements ObserverInterface
             $customerObj = $this->customerRepository->getById($customerId);
             //var_dump($post);exit;
             $optionId = '';
+
             foreach ($post as $key => $value) {
+                //if the input is from the fme custom attributes only
                 if (stripos($key, 'fme_') !== false) {
                     $attribute_code = str_replace('fme_', '', $key);
+
+                    if ($this->getAttributeType($attribute_code) == "checkbox") {
+                        $checkboxValues = [];
+                        var_dump($value);
+                        echo "<br>";
+                        foreach ($value as $key2 => $val) {
+                            echo $key2;
+                            echo "<br>";
+                            echo $val;
+                            exit;
+                            if ($val == 1) {
+                                $checkboxValues[] = $key2;
+                            }
+                        }
+                        $optionId = implode(",", $checkboxValues);
+                    }
+
+                    $attribute_id = $this->getAttributeIdByCode($attribute_code);
                     /*if ($key == "fme_customer_group") {
                         if (is_array($value)) { // if value is array type
                             if ($this->getAttributeType($attribute_code) == "checkbox") {
@@ -102,7 +142,25 @@ class CustomerSaveAfter implements ObserverInterface
                         }
                     }*/
                     //select
-                    if ($this->getAttributeType($attribute_code) == "select") {
+                    $selected_customer_group = '';
+
+                    //find highest weightage among the inputs having options
+                    $inputTypes = array("select", "multiselect", "checkbox", "radio");
+                    if (in_array($this->getAttributeType($attribute_code), $inputTypes)) {
+                        $weight = '';
+                        $highest_weight_input = '';
+                        //find weight of the input
+                        $input_weight = $this->getInputWeight($attribute_id);
+                        if($input_weight > $weight)
+                        {
+                            $highest_weight_input = $attribute_code;
+                            $weight = $input_weight;
+                        }
+
+                    }
+
+                    //checkbox
+                    if ($this->getAttributeType($highest_weight_input) == "checkbox") {
                         $checkboxValues = [];
                         foreach ($value as $key2 => $val) {
                             if ($val == 1) {
@@ -111,12 +169,12 @@ class CustomerSaveAfter implements ObserverInterface
                         }
                         $optionId = implode(",", $checkboxValues);
                     }
-                    //checkbox
-                    if ($this->getAttributeType($attribute_code) == "checkbox") {
+                    if ($this->getAttributeType($highest_weight_input) == "multiselect") {
                         $checkboxValues = [];
                         foreach ($value as $key2 => $val) {
                             if ($val == 1) {
                                 $checkboxValues[] = $key2;
+                                //$selected_customer_group = $key2;
                             }
                         }
                         $optionId = implode(",", $checkboxValues);
@@ -172,5 +230,29 @@ class CustomerSaveAfter implements ObserverInterface
             return $group->getId();
         }
         return null; // Return null if group not found
+    }
+
+    public function getAttributeType($code, $entityTypeId = null)
+    {
+        if ($entityTypeId == null || $entityTypeId < 1) {
+            $entityTypeId = (int)$this->eavEntityFactory->create()->setType(
+                \FME\AdditionalCustomerAttributes\Model\Attribute::ENTITY
+            )->getTypeId();
+        }
+        return $this->resource->getAttributeType($code, $entityTypeId);
+    }
+
+    public function getInputWeight($input)
+    {
+        //$weight = 5;
+        $weight = $this->catalogAttributeResource->getAttributePosition($input);
+        //$this->catalogAttribute->getCollection()->addFieldToFilter('attribute_id', $input)->load();
+        //return ($weight > $max_weight?$weight:$max_weight);
+        return $weight;
+    }
+
+    public function getAttributeIdByCode($attribute_code)
+    {
+        return $this->attributeHelper->getAttributeIdByCode($attribute_code);
     }
 }

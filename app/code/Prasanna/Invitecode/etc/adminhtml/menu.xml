@@ -1,7 +1,8 @@
 <?xml version="1.0"?>
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Backend:etc/menu.xsd">
     <menu>
-        <add id="Prasanna_Invitecode::invitecode" title="Invite Code" module="Prasanna_Invitecode" parent="Magento_Backend::content" sortOrder="110" resource="Prasanna_Invitecode::index" />
-        <add id="Prasanna_Invitecode::index" title="Manage Codes" module="Prasanna_Invitecode" parent="Prasanna_Invitecode::index" sortOrder="10" action="invitecode/index" resource="Prasanna_Invitecode::index" />
+        <add id="Prasanna_Invitecode::invitecode" title="Invite Code" module="Prasanna_Invitecode" parent="Magento_Backend::content" sortOrder="50" resource="Magento_Backend::content" />
+        <add id="Prasanna_Invitecode::index" title="Manage Codes" module="Prasanna_Invitecode" parent="Prasanna_Invitecode::invitecode" sortOrder="10" action="invitecode/index" resource="Magento_Backend::content" />
+        <add id="Prasanna_Invitecode::ajax" title="Ajax Call" module="Prasanna_Invitecode" parent="Prasanna_Invitecode::invitecode" sortOrder="11" action="invitecode/ajax/index" resource="Magento_Backend::content" />
     </menu>
 </config>

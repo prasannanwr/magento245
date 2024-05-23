@@ -62,7 +62,7 @@ class Edit extends \FME\AdditionalCustomerAttributes\Controller\Adminhtml\Attrib
             ->setIsPopup((bool)$this->getRequest()->getParam('popup'));
         return $resultPage;
     }
-    
+
     /**
      * Determine if authorized to perform group actions.
      *

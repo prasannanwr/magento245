@@ -14,6 +14,12 @@
 
 $stores = $block->getStoresSortedBySortOrder();
 
+/* Custom added for retrieving the current attribute code for the ajax call */
+$objectManager =  \Magento\Framework\App\ObjectManager::getInstance();
+$attributeRepository = $objectManager->create('\Magento\Eav\Block\Adminhtml\Attribute\Edit\Main\AbstractMain');
+$attribute = $attributeRepository->getAttributeObject();
+$currentAttributeCode = $attribute->getAttributeCode();
+
 ?>
 <fieldset class="fieldset">
     <legend class="legend">
@@ -36,7 +42,7 @@ $stores = $block->getStoresSortedBySortOrder();
                         </th>
                     <?php endforeach;
 //                    $storetotal = count($stores) + 3;
-                    $storetotal = count($stores) + 4;
+                    $storetotal = count($stores) + 4; // updated to 4 because a field weightage is added
                     ?>
                     <th class="col-default control-table-actions-th">
                         <span><?php echo $block->escapeHtml(__('Weight')) ?></span></th>
@@ -116,6 +122,7 @@ $stores = $block->getStoresSortedBySortOrder();
                      <?php if ($block->getReadOnly() || $block->canManageOptionDefaultOnly()):?>
                          disabled="disabled"
                      <?php endif;?>/>
+                 <input type="hidden" name="weigtage_id[<%- data.id %>]" id="weightage_<%- data.id %>" value="" />
              </td>
             <td id="delete_button_container_<%- data.id %>" class="col-delete">
                 <input type="hidden" class="delete-flag" name="option[delete][<%- data.id %>]" value="" />
@@ -154,22 +161,35 @@ $stores = $block->getStoresSortedBySortOrder();
         }
     </script>
 </fieldset>
-<!-- custom script added for weightage values -->
+<!-- custom script added for fetching the options weightage values -->
 <script type="text/javascript">
     require(['jquery','underscore','mage/url'], function($, _, urlBuilder){
         $(document).ready(function() {
-            //console.log(urlBuilder.build('invitecode/index'));
-            // var dataToSend = { id: 123, name: 'Sample Item' };
-            // var ajaxUrl = urlBuilder.build('invitecode/ajax/index');
-            var ajaxUrl = 'http://local.magento245.com/admin_1lmmlj/invitecode/ajax/index');
-            console.log(ajaxUrl);
+            var dataToSend = { attribute_code: '<?=$currentAttributeCode?>', form_key: window.FORM_KEY };
+            var ajaxUrl = "<?php echo $this->getUrl('invitecode/ajax/index'); ?>"+"?isAjax=true";
             $.ajax({
                 url: ajaxUrl,
                 type: 'POST',
-                dataType: 'json'
-            }).done(function(data) {
-                console.log(data);
+                dataType: 'json',
+                data: dataToSend
+            }).done(function(response) {
+                console.log('got response');
+                parseResponse(response);
             });
+
+            function parseResponse(response)
+            {
+                if(typeof response == "object") {
+                    // var data_obj = JSON.parse(response);
+                    $.each(response, function (index, value) {
+                        $.each(value, function (key, data) {
+                            //console.log(data.id);
+                            $("#"+data.id).val(data.weight);
+                            $("#weightage_"+data.id).val(data.entity_id);
+                        });
+                    });
+                }
+            }
         });
     });
 </script>

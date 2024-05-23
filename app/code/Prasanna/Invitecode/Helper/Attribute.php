@@ -18,4 +18,10 @@ class Attribute extends AbstractHelper
         $attribute = $this->eavConfig->getAttribute($entityType, $attributeId);
         return $attribute->getAttributeCode();
     }
+
+    public function getAttributeIdByCode($attribute_code, $entityType = 'additionalcustomerattributes')
+    {
+        $attribute = $this->eavConfig->getAttribute($entityType, $attribute_code);
+        return $attribute ? $attribute->getId() : null;
+    }
 }
