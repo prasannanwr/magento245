@@ -32,7 +32,7 @@ class InstallSchema implements \Magento\Framework\Setup\InstallSchemaInterface
                     ['nullable' => true],
                     'Attribute code')
                 ->addColumn(
-                    'Code',
+                    'code',
                     \Magento\Framework\DB\Ddl\Table::TYPE_TEXT,
                     126,
                     ['nullable'=>false],
@@ -55,6 +55,11 @@ class InstallSchema implements \Magento\Framework\Setup\InstallSchemaInterface
                     \Magento\Framework\DB\Ddl\Table::TYPE_INTEGER,
                     null,
                     ['nullable'=>true])
+                ->addColumn('active',
+                    \Magento\Framework\DB\Ddl\Table::TYPE_SMALLINT,
+                    null,
+                    ['nullable'=> true],
+                    'Active')
                 ->addColumn('created_date',
                     \Magento\Framework\DB\Ddl\Table::TYPE_TIMESTAMP,
                     null,

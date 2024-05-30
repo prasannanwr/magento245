@@ -29,7 +29,7 @@ abstract class GenericButton
      */
     public function getModelId()
     {
-        return $this->context->getRequest()->getParam('invite_code_id');
+        return $this->context->getRequest()->getParam('entity_id');
     }
 
     /**
@@ -44,4 +44,3 @@ abstract class GenericButton
         return $this->context->getUrlBuilder()->getUrl($route, $params);
     }
 }
-

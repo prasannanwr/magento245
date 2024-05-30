@@ -82,7 +82,7 @@ class Front extends Generic
                 'values' => $yesnoSource
             ]
         );
-        
+
         $scopes = [
             1 => __('Both'),
             2 => __('Registration Page Only'),

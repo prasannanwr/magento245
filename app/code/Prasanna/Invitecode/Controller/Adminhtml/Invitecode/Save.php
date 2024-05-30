@@ -36,24 +36,25 @@ class Save extends \Magento\Backend\App\Action
         /** @var \Magento\Backend\Model\View\Result\Redirect $resultRedirect */
         $resultRedirect = $this->resultRedirectFactory->create();
         $data = $this->getRequest()->getPostValue();
+
         if ($data) {
-            $id = $this->getRequest()->getParam('invite_code_id');
-        
+            $id = $this->getRequest()->getParam('entity_id');
+
             $model = $this->_objectManager->create(\Prasanna\Invitecode\Model\InviteCode::class)->load($id);
             if (!$model->getId() && $id) {
                 $this->messageManager->addErrorMessage(__('This Invite Code no longer exists.'));
                 return $resultRedirect->setPath('*/*/');
             }
-        
+
             $model->setData($data);
-        
+
             try {
                 $model->save();
                 $this->messageManager->addSuccessMessage(__('You saved the Invite Code.'));
                 $this->dataPersistor->clear('prasanna_invitecode_invite_code');
-        
+
                 if ($this->getRequest()->getParam('back')) {
-                    return $resultRedirect->setPath('*/*/edit', ['invite_code_id' => $model->getId()]);
+                    return $resultRedirect->setPath('*/*/edit', ['entity_id' => $model->getId()]);
                 }
                 return $resultRedirect->setPath('*/*/');
             } catch (LocalizedException $e) {
@@ -61,11 +62,10 @@ class Save extends \Magento\Backend\App\Action
             } catch (\Exception $e) {
                 $this->messageManager->addExceptionMessage($e, __('Something went wrong while saving the Invite Code.'));
             }
-        
+
             $this->dataPersistor->set('prasanna_invitecode_invite_code', $data);
-            return $resultRedirect->setPath('*/*/edit', ['invite_code_id' => $this->getRequest()->getParam('invite_code_id')]);
+            return $resultRedirect->setPath('*/*/edit', ['entity_id' => $this->getRequest()->getParam('entity_id')]);
         }
         return $resultRedirect->setPath('*/*/');
     }
 }
-

@@ -38,4 +38,3 @@ class NewAction extends \Prasanna\Invitecode\Controller\Adminhtml\Invitecode
         return $resultForward->forward('edit');
     }
 }
-

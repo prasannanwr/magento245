@@ -34,9 +34,9 @@ class Edit extends \Prasanna\Invitecode\Controller\Adminhtml\Invitecode
     public function execute()
     {
         // 1. Get ID and create model
-        $id = $this->getRequest()->getParam('invite_code_id');
+        $id = $this->getRequest()->getParam('entity_id');
         $model = $this->_objectManager->create(\Prasanna\Invitecode\Model\InviteCode::class);
-        
+
         // 2. Initial checking
         if ($id) {
             $model->load($id);
@@ -47,8 +47,8 @@ class Edit extends \Prasanna\Invitecode\Controller\Adminhtml\Invitecode
                 return $resultRedirect->setPath('*/*/');
             }
         }
-        $this->_coreRegistry->register('prasanna_invitecode_invite_code', $model);
-        
+        $this->_coreRegistry->register('prasanna_invitecode', $model);
+
         // 3. Build edit form
         /** @var \Magento\Backend\Model\View\Result\Page $resultPage */
         $resultPage = $this->resultPageFactory->create();
@@ -61,4 +61,3 @@ class Edit extends \Prasanna\Invitecode\Controller\Adminhtml\Invitecode
         return $resultPage;
     }
 }
-

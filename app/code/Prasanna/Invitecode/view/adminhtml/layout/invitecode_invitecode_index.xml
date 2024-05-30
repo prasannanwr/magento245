@@ -3,7 +3,7 @@
 	<update handle="styles"/>
 	<body>
 		<referenceContainer name="content">
-			<uiComponent name="prasanna_invitecode_invite_code_form"/>
+			<uiComponent name="prasanna_invitecode_listing"/>
 		</referenceContainer>
 	</body>
 </page>

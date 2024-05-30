@@ -104,94 +104,64 @@ class CustomerSaveAfter implements ObserverInterface
             //var_dump($post);exit;
             $optionId = '';
 
+            /* find the highest weightage among the inputs that can have options mapped to customer groups */
+            $weight = '';
+            $highest_weight_input = '';
+            $highest_weight_input_type = '';
             foreach ($post as $key => $value) {
                 //if the input is from the fme custom attributes only
                 if (stripos($key, 'fme_') !== false) {
                     $attribute_code = str_replace('fme_', '', $key);
-
-                    if ($this->getAttributeType($attribute_code) == "checkbox") {
-                        $checkboxValues = [];
-                        var_dump($value);
-                        echo "<br>";
-                        foreach ($value as $key2 => $val) {
-                            echo $key2;
-                            echo "<br>";
-                            echo $val;
-                            exit;
-                            if ($val == 1) {
-                                $checkboxValues[] = $key2;
-                            }
-                        }
-                        $optionId = implode(",", $checkboxValues);
-                    }
-
-                    $attribute_id = $this->getAttributeIdByCode($attribute_code);
-                    /*if ($key == "fme_customer_group") {
-                        if (is_array($value)) { // if value is array type
-                            if ($this->getAttributeType($attribute_code) == "checkbox") {
-                                $checkboxValues = [];
-                                foreach ($value as $key2 => $val) {
-                                    if ($val == 1) {
-                                        $checkboxValues[] = $key2;
-                                    }
-                                }
-                                $optionId = implode(",", $checkboxValues);
-                            }
-                        } else {
-                            $optionId = $value;
-                        }
-                    }*/
-                    //select
-                    $selected_customer_group = '';
-
-                    //find highest weightage among the inputs having options
+                    //find the highest weightage among the inputs having options
                     $inputTypes = array("select", "multiselect", "checkbox", "radio");
-                    if (in_array($this->getAttributeType($attribute_code), $inputTypes)) {
-                        $weight = '';
-                        $highest_weight_input = '';
-                        //find weight of the input
+                    $attribute_type = $this->getAttributeType($attribute_code);
+                    if (in_array($attribute_type, $inputTypes)) {
+                        //find the weight of the input
+                        $attribute_id = $this->getAttributeIdByCode($attribute_code);
                         $input_weight = $this->getInputWeight($attribute_id);
                         if($input_weight > $weight)
                         {
                             $highest_weight_input = $attribute_code;
+                            $highest_weight_input_type = $attribute_type;
                             $weight = $input_weight;
                         }
-
                     }
-
-                    //checkbox
-                    if ($this->getAttributeType($highest_weight_input) == "checkbox") {
-                        $checkboxValues = [];
-                        foreach ($value as $key2 => $val) {
-                            if ($val == 1) {
-                                $checkboxValues[] = $key2;
-                            }
-                        }
-                        $optionId = implode(",", $checkboxValues);
-                    }
-                    if ($this->getAttributeType($highest_weight_input) == "multiselect") {
-                        $checkboxValues = [];
-                        foreach ($value as $key2 => $val) {
-                            if ($val == 1) {
-                                $checkboxValues[] = $key2;
-                                //$selected_customer_group = $key2;
-                            }
-                        }
-                        $optionId = implode(",", $checkboxValues);
-                    }
-
                 }
             }
 
-            if (!empty($optionId)) :
-                //fetch the group id of the selected option
-                //$storeId = $this->_storeManager->getStore()->getId();
-                //get admin value of the selection option
-                $adminValue = $this->getOptionValue($optionId);
-                //$adminValue = $this->attributeModel->getOptionValueById($optionId, $storeId); //dont work
-                //get group id by the option admin value
-                //the option admin value should be the name of the group.
+            // now find the highest weight of option item for checkbox, multiselect
+            $highest_weight_input = "fme_".$highest_weight_input;
+            $inputTypes = array("multiselect", "checkbox");
+            if (in_array($highest_weight_input_type, $inputTypes)) {
+                $checkboxValues = [];
+                //$checkboxValues[] = $key2;
+                $highest_weight_post_item = $this->request->getParam($highest_weight_input);
+                $option_weight_max = '';
+                foreach ($highest_weight_post_item as $key => $value) {
+                    if($value > 0) {
+                        $option_weight = $this->getOptionWeight($value);
+                        if($option_weight > $option_weight_max)
+                        {
+                            //$highest_weight_option = $value;
+                            $option_weight_max = $option_weight;
+                            $optionId = $value;
+                        }
+                    }
+                }
+                //$optionId = implode(",", $checkboxValues);
+            } else {
+                $optionId = $value;
+            }
 
+            if (!empty($optionId)) :
+                //$storeId = $this->_storeManager->getStore()->getId();
+                /* fetch the group id of the selected option */
+                $adminValue = $this->getOptionValue($optionId); //get admin value of the selection option
+                //$adminValue = $this->attributeModel->getOptionValueById($optionId, $storeId); //dont work
+
+                /* get group id by the option admin value
+                 * the option admin value should be the name of the group.
+                */
                 $customerGroupId = $this->getGroupIdByGroupCode($adminValue);
                 //$customerGroupId = 4; //STD_Cust
                 $customerObj->setGroupId($customerGroupId);
@@ -244,7 +214,9 @@ class CustomerSaveAfter implements ObserverInterface
 
     public function getInputWeight($input)
     {
-        //$weight = 5;
+        //TO DO
+        //need to add weigtage field to attribute and get the weigtage of atttribute
+        //instead of position
         $weight = $this->catalogAttributeResource->getAttributePosition($input);
         //$this->catalogAttribute->getCollection()->addFieldToFilter('attribute_id', $input)->load();
         //return ($weight > $max_weight?$weight:$max_weight);
@@ -254,5 +226,10 @@ class CustomerSaveAfter implements ObserverInterface
     public function getAttributeIdByCode($attribute_code)
     {
         return $this->attributeHelper->getAttributeIdByCode($attribute_code);
+    }
+
+    public function getOptionWeight($option)
+    {
+        return $this->catalogAttributeResource->getOptionWeight($option);
     }
 }

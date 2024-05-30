@@ -1,0 +1,138 @@
+<?xml version="1.0" ?>
+<form xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Ui:etc/ui_configuration.xsd">
+	<argument name="data" xsi:type="array">
+		<item name="js_config" xsi:type="array">
+			<item name="provider" xsi:type="string">invitecode_invitecode_form.invitecode_form_data_source</item>
+		</item>
+		<item name="label" xsi:type="string" translate="true">General Information</item>
+		<item name="template" xsi:type="string">templates/form/collapsible</item>
+	</argument>
+	<settings>
+		<buttons>
+			<button name="back" class="Prasanna\Invitecode\Block\Adminhtml\Invite\Code\Edit\BackButton"/>
+			<button name="delete" class="Prasanna\Invitecode\Block\Adminhtml\Invite\Code\Edit\DeleteButton"/>
+			<button name="save" class="Prasanna\Invitecode\Block\Adminhtml\Invite\Code\Edit\SaveButton"/>
+			<button name="save_and_continue" class="Prasanna\Invitecode\Block\Adminhtml\Invite\Code\Edit\SaveAndContinueButton"/>
+		</buttons>
+		<namespace>invitecode_invitecode_form</namespace>
+		<dataScope>data</dataScope>
+		<deps>
+			<dep>invitecode_invitecode_form.invitecode_form_data_source</dep>
+		</deps>
+	</settings>
+	<dataSource name="invitecode_form_data_source">
+		<argument name="data" xsi:type="array">
+			<item name="js_config" xsi:type="array">
+				<item name="component" xsi:type="string">Magento_Ui/js/form/provider</item>
+			</item>
+		</argument>
+		<settings>
+			<submitUrl path="*/*/save"/>
+		</settings>
+		<dataProvider name="invitecode_form_data_source" class="Prasanna\Invitecode\Model\Invitecode\DataProvider">
+			<settings>
+				<requestFieldName>entity_id</requestFieldName>
+				<primaryFieldName>entity_id</primaryFieldName>
+			</settings>
+		</dataProvider>
+	</dataSource>
+	<fieldset name="general">
+		<settings>
+			<label>General</label>
+		</settings>
+<!--		<field name="attribute_code" formElement="input" sortOrder="20">-->
+<!--			<argument name="data" xsi:type="array">-->
+<!--				<item name="config" xsi:type="array">-->
+<!--					<item name="source" xsi:type="string">invite_code</item>-->
+<!--				</item>-->
+<!--			</argument>-->
+<!--			<settings>-->
+<!--				<dataType>text</dataType>-->
+<!--				<label translate="true">Attribute Code</label>-->
+<!--				<dataScope>attribute_code</dataScope>-->
+<!--				<validation>-->
+<!--					<rule name="required-entry" xsi:type="boolean">false</rule>-->
+<!--				</validation>-->
+<!--			</settings>-->
+<!--		</field>-->
+		<field name="code" formElement="input" sortOrder="30">
+			<argument name="data" xsi:type="array">
+				<item name="config" xsi:type="array">
+					<item name="source" xsi:type="string">invite_code</item>
+				</item>
+			</argument>
+			<settings>
+				<dataType>text</dataType>
+				<label translate="true">Code</label>
+				<dataScope>code</dataScope>
+				<validation>
+					<rule name="required-entry" xsi:type="boolean">true</rule>
+				</validation>
+			</settings>
+		</field>
+		<field name="reusable" formElement="select" sortOrder="40">
+			<argument name="data" xsi:type="array">
+                <item name="options" xsi:type="object">Prasanna\Invitecode\Model\Config\Source\Options</item>
+				<item name="config" xsi:type="array">
+					<item name="source" xsi:type="string">invite_code</item>
+				</item>
+			</argument>
+			<settings>
+				<dataType>text</dataType>
+				<label translate="true">Reusable</label>
+				<dataScope>reusable</dataScope>
+				<validation>
+					<rule name="required-entry" xsi:type="boolean">false</rule>
+				</validation>
+			</settings>
+		</field>
+		<field name="case_sensitive" formElement="select" sortOrder="50">
+			<argument name="data" xsi:type="array">
+                <item name="options" xsi:type="object">Prasanna\Invitecode\Model\Config\Source\Options</item>
+				<item name="config" xsi:type="array">
+					<item name="source" xsi:type="string">invite_code</item>
+				</item>
+			</argument>
+			<settings>
+				<dataType>text</dataType>
+				<label translate="true">Case sensitive</label>
+				<dataScope>case_sensitive</dataScope>
+				<validation>
+					<rule name="required-entry" xsi:type="boolean">false</rule>
+				</validation>
+			</settings>
+		</field>
+		<field name="customer_group" formElement="select" sortOrder="60">
+			<argument name="data" xsi:type="array">
+                <item name="options" xsi:type="object">Magento\Customer\Model\Customer\Source\Group</item>
+				<item name="config" xsi:type="array">
+					<item name="source" xsi:type="string">invite_code</item>
+				</item>
+			</argument>
+			<settings>
+				<dataType>text</dataType>
+				<label translate="true">Customer group</label>
+				<dataScope>customer_group</dataScope>
+				<validation>
+					<rule name="required-entry" xsi:type="boolean">true</rule>
+				</validation>
+			</settings>
+		</field>
+        <field name="active" formElement="select" sortOrder="70">
+            <argument name="data" xsi:type="array">
+                <item name="options" xsi:type="object">Prasanna\Invitecode\Model\Config\Source\Options</item>
+                <item name="config" xsi:type="array">
+                    <item name="source" xsi:type="string">invite_code</item>
+                </item>
+            </argument>
+            <settings>
+                <dataType>text</dataType>
+                <label translate="true">Active</label>
+                <dataScope>active</dataScope>
+                <validation>
+                    <rule name="required-entry" xsi:type="boolean">false</rule>
+                </validation>
+            </settings>
+        </field>
+	</fieldset>
+</form>
