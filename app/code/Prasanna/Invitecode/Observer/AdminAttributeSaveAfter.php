@@ -19,5 +19,6 @@ class AdminAttributeSaveAfter implements ObserverInterface
         // TODO: Implement execute() method.
         print("attribute save after called");
         exit;
+
     }
 }

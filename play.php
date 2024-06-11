@@ -12,6 +12,21 @@ $objectManager =  \Magento\Framework\App\ObjectManager::getInstance();
 //$storeManager = $objectManager->get('\Magento\Store\Model\StoreManagerInterface');
 $attributeRepository = $objectManager->create('\Magento\Eav\Block\Adminhtml\Attribute\Edit\Main\AbstractMain');
 $optionCollection = $objectManager->create('\Prasanna\Invitecode\Model\ResourceModel\Attribute\Collection');
+
+$eavEntityFactory = $objectManager->create('\Magento\Eav\Model\Config');
+$inviteCodeCollection = $objectManager->create('\Prasanna\Invitecode\Model\ResourceModel\Invitecode\Collection');
+$highest_weight_post_item = "SUMMER";
+$inviteInfo = $inviteCodeCollection->addFieldToFilter('code', $highest_weight_post_item)->getFirstItem();
+if(!$inviteInfo->isEmpty()){
+    echo $inviteInfo->getData('reusable');
+} else {
+    echo "empty";
+}
+exit;
+
+$attrInfo = $eavEntityFactory->getAttribute(9, 'group_checkobx');
+var_dump($attrInfo->getData('input_weight'));exit;
+
 //$attribute = $attributeRepository->getAttributeObject();
 //$currentAttributeCode = $attribute->getAttributeCode();
 $currentAttributeCode = "test_multiselect";

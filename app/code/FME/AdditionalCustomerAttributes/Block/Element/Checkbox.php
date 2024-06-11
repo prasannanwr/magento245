@@ -9,6 +9,8 @@
  */
 namespace FME\AdditionalCustomerAttributes\Block\Element;
 
+use function PHPUnit\Framework\isNull;
+
 class Checkbox extends \FME\AdditionalCustomerAttributes\Block\Element\Select
 {
     /**
@@ -29,7 +31,11 @@ class Checkbox extends \FME\AdditionalCustomerAttributes\Block\Element\Select
     public function getValues()
     {
         $value = $this->getValue();
-        return explode(',', $value);
+        if(is_array($value)) {
+            return explode(',', $value);
+        } else {
+            return false;
+        }
     }
 
     /**
@@ -40,6 +46,10 @@ class Checkbox extends \FME\AdditionalCustomerAttributes\Block\Element\Select
      */
     public function isSelected($value)
     {
-        return in_array($value, $this->getValues());
+        if(is_array($this->getValues())) {
+            return in_array($value, $this->getValues());
+        } else {
+            return false;
+        }
     }
 }

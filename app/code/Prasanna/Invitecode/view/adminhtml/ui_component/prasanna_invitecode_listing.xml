@@ -88,18 +88,18 @@
                 </editor>
             </settings>
         </column>
-        <column name="attribute_code">
-            <settings>
-                <filter>text</filter>
-                <label translate="true">Attribute Code</label>
-                <editor>
-                    <editorType>text</editorType>
-                    <validation>
-                        <rule name="required-entry" xsi:type="boolean">false</rule>
-                    </validation>
-                </editor>
-            </settings>
-        </column>
+<!--        <column name="attribute_code">-->
+<!--            <settings>-->
+<!--                <filter>text</filter>-->
+<!--                <label translate="true">Attribute Code</label>-->
+<!--                <editor>-->
+<!--                    <editorType>text</editorType>-->
+<!--                    <validation>-->
+<!--                        <rule name="required-entry" xsi:type="boolean">false</rule>-->
+<!--                    </validation>-->
+<!--                </editor>-->
+<!--            </settings>-->
+<!--        </column>-->
         <column name="code">
             <settings>
                 <filter>text</filter>
@@ -124,30 +124,30 @@
                 </editor>
             </settings>
         </column>
-        <column name="case_sensitive">
-            <settings>
-                <filter>text</filter>
-                <label translate="true">Case sensitive</label>
-                <editor>
-                    <editorType>text</editorType>
-                    <validation>
-                        <rule name="required-entry" xsi:type="boolean">false</rule>
-                    </validation>
-                </editor>
-            </settings>
-        </column>
-        <column name="customer_group">
-            <settings>
-                <filter>text</filter>
-                <label translate="true">Customer group</label>
-                <editor>
-                    <editorType>text</editorType>
-                    <validation>
-                        <rule name="required-entry" xsi:type="boolean">false</rule>
-                    </validation>
-                </editor>
-            </settings>
-        </column>
+<!--        <column name="case_sensitive">-->
+<!--            <settings>-->
+<!--                <filter>text</filter>-->
+<!--                <label translate="true">Case sensitive</label>-->
+<!--                <editor>-->
+<!--                    <editorType>text</editorType>-->
+<!--                    <validation>-->
+<!--                        <rule name="required-entry" xsi:type="boolean">false</rule>-->
+<!--                    </validation>-->
+<!--                </editor>-->
+<!--            </settings>-->
+<!--        </column>-->
+<!--        <column name="customer_group">-->
+<!--            <settings>-->
+<!--                <filter>text</filter>-->
+<!--                <label translate="true">Customer group</label>-->
+<!--                <editor>-->
+<!--                    <editorType>text</editorType>-->
+<!--                    <validation>-->
+<!--                        <rule name="required-entry" xsi:type="boolean">false</rule>-->
+<!--                    </validation>-->
+<!--                </editor>-->
+<!--            </settings>-->
+<!--        </column>-->
         <column name="count">
             <settings>
                 <filter>text</filter>
@@ -172,7 +172,7 @@
                 </editor>
             </settings>
         </column>
-        <actionsColumn name="actions" class="Prasanna\Invitecode\Ui\Component\Listing\Column\InvitecodeActions">
+        <actionsColumn name="actions" class="Prasanna\Invitecode\Ui\Component\Listing\Column\InvitecodeActions" sortOrder="200">
             <settings>
                 <indexField>entity_id</indexField>
                 <resizeEnabled>false</resizeEnabled>

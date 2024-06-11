@@ -11,9 +11,9 @@ class InvitecodeActions extends \Magento\Ui\Component\Listing\Columns\Column
 {
 
     protected $urlBuilder;
-    const URL_PATH_EDIT = 'prasanna_invitecode/invitecode/edit';
-    const URL_PATH_DETAILS = 'prasanna_invitecode/invitecode/details';
-    const URL_PATH_DELETE = 'prasanna_invitecode/invitecode/delete';
+    const URL_PATH_EDIT = 'invitecode/invitecode/edit';
+    const URL_PATH_DETAILS = 'invitecode/invitecode/details';
+    const URL_PATH_DELETE = 'invitecode/invitecode/delete';
 
     /**
      * @param \Magento\Framework\View\Element\UiComponent\ContextInterface $context

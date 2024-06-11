@@ -56,6 +56,8 @@ class CustomerSaveAfter implements ObserverInterface
     private $catalogAttributeResource;
     private $attributeHelper;
 
+    protected $inviteCodeCollection;
+
     /**
      * @param \Magento\Framework\App\Config\ScopeConfigInterface $scopeConfiguration
      */
@@ -72,7 +74,8 @@ class CustomerSaveAfter implements ObserverInterface
         \FME\AdditionalCustomerAttributes\Model\ResourceModel\CustomerValues $resource,
         Attribute $catalogAttribute,
         \Prasanna\Invitecode\Model\ResourceModel\Attribute $catalogAttributeResource,
-        \Prasanna\Invitecode\Helper\Attribute $attributeHelper
+        \Prasanna\Invitecode\Helper\Attribute $attributeHelper,
+        \Prasanna\Invitecode\Model\ResourceModel\Invitecode\Collection $inviteCodeCollection
     ) {
         $this->request = $request;
         $this->customerRepository = $customerRepository;
@@ -89,6 +92,7 @@ class CustomerSaveAfter implements ObserverInterface
         $this->catalogAttribute = $catalogAttribute;
         $this->catalogAttributeResource = $catalogAttributeResource;
         $this->attributeHelper = $attributeHelper;
+        $this->inviteCodeCollection = $inviteCodeCollection;
     }
     /**
      * @param Observer $observer
@@ -108,61 +112,93 @@ class CustomerSaveAfter implements ObserverInterface
             $weight = '';
             $highest_weight_input = '';
             $highest_weight_input_type = '';
+            $customerGroupId = '';
+            $inputTypes = array("select", "multiselect", "checkbox", "radio");
+
             foreach ($post as $key => $value) {
+
                 //if the input is from the fme custom attributes only
                 if (stripos($key, 'fme_') !== false) {
                     $attribute_code = str_replace('fme_', '', $key);
                     //find the highest weightage among the inputs having options
-                    $inputTypes = array("select", "multiselect", "checkbox", "radio");
                     $attribute_type = $this->getAttributeType($attribute_code);
-                    if (in_array($attribute_type, $inputTypes)) {
+                    //if ((in_array($attribute_type, $inputTypes) && $this->isCustomerGroup($attribute_code) == 1) || $post[$key] == "fme_invite_code") {
+                    if ($this->isCustomerGroup($attribute_code) == 1 || $post[$key] == "fme_invite_code") {
                         //find the weight of the input
-                        $attribute_id = $this->getAttributeIdByCode($attribute_code);
-                        $input_weight = $this->getInputWeight($attribute_id);
-                        if($input_weight > $weight)
+                        if($value != '')
                         {
-                            $highest_weight_input = $attribute_code;
-                            $highest_weight_input_type = $attribute_type;
-                            $weight = $input_weight;
+                            $attribute_id = $this->getAttributeIdByCode($attribute_code);
+                            $input_weight = $this->getInputWeight($attribute_code);
+                            if($input_weight > $weight)
+                            {
+                                $highest_weight_input = $attribute_code;
+                                $highest_weight_input_type = $attribute_type;
+                                $weight = $input_weight;
+                            }
                         }
+
                     }
                 }
             }
 
             // now find the highest weight of option item for checkbox, multiselect
-            $highest_weight_input = "fme_".$highest_weight_input;
-            $inputTypes = array("multiselect", "checkbox");
-            if (in_array($highest_weight_input_type, $inputTypes)) {
-                $checkboxValues = [];
-                //$checkboxValues[] = $key2;
-                $highest_weight_post_item = $this->request->getParam($highest_weight_input);
-                $option_weight_max = '';
-                foreach ($highest_weight_post_item as $key => $value) {
-                    if($value > 0) {
-                        $option_weight = $this->getOptionWeight($value);
-                        if($option_weight > $option_weight_max)
+            if($weight != '') {
+                $highest_weight_input = "fme_".$highest_weight_input;
+                //echo $highest_weight_input;exit;
+                if($highest_weight_input == "fme_invite_code") {
+                    $code = $post["fme_invite_code"];
+                    $inviteInfo = $this->inviteCodeCollection->addFieldToFilter('code', $code)->addFieldToFilter('active', 1)->getFirstItem();
+                    if(!$inviteInfo->isEmpty()){
+                        if($inviteInfo->getData('count') <= 0 || ($inviteInfo->getData('count') > 0 && $inviteInfo->getData('reusable') == 1))
                         {
-                            //$highest_weight_option = $value;
-                            $option_weight_max = $option_weight;
-                            $optionId = $value;
+                            $customerGroupId = $inviteInfo->getData('customer_group');
+                            $count = $inviteInfo->getData('count');
+                            //update the count
+                            $inviteData = $this->inviteCodeCollection->addFieldToFilter('code', $code);
+                            foreach ($inviteData as $code)
+                            {
+                                $code->setData('count',$count+1);
+                                $code->save();
+                            }
                         }
                     }
+                } else {
+                    $inputTypes = array("multiselect", "checkbox");
+                    if (in_array($highest_weight_input_type, $inputTypes)) {
+                        $checkboxValues = [];
+                        //$checkboxValues[] = $key2;
+                        $highest_weight_post_item = $this->request->getParam($highest_weight_input);
+                        $option_weight_max = '';
+                        foreach ($highest_weight_post_item as $key => $value) {
+                            if ($value > 0) {
+                                $option_weight = $this->getOptionWeight($value);
+                                if ($option_weight > $option_weight_max) {
+                                    //$highest_weight_option = $value;
+                                    $option_weight_max = $option_weight;
+                                    $optionId = $value;
+                                }
+                            }
+                        }
+                        //$optionId = implode(",", $checkboxValues);
+                    } else {
+                        $optionId = $value;
+                    }
+                    if (!empty($optionId)) :
+                        //$storeId = $this->_storeManager->getStore()->getId();
+                        /* fetch the group id of the selected option */
+                        $adminValue = $this->getOptionValue($optionId); //get admin value of the selection option
+                        //$adminValue = $this->attributeModel->getOptionValueById($optionId, $storeId); //dont work
+                        /* get group id by the option admin value
+                         * the option admin value should be the name of the group.
+                        */
+                        $customerGroupId = $this->getGroupIdByGroupCode($adminValue);
+                    endif;
                 }
-                //$optionId = implode(",", $checkboxValues);
-            } else {
-                $optionId = $value;
+
             }
 
-            if (!empty($optionId)) :
-                //$storeId = $this->_storeManager->getStore()->getId();
-                /* fetch the group id of the selected option */
-                $adminValue = $this->getOptionValue($optionId); //get admin value of the selection option
-                //$adminValue = $this->attributeModel->getOptionValueById($optionId, $storeId); //dont work
 
-                /* get group id by the option admin value
-                 * the option admin value should be the name of the group.
-                */
-                $customerGroupId = $this->getGroupIdByGroupCode($adminValue);
+            if (!empty($customerGroupId)) :
                 //$customerGroupId = 4; //STD_Cust
                 $customerObj->setGroupId($customerGroupId);
                 $this->customerRepository->save($customerObj);
@@ -217,10 +253,11 @@ class CustomerSaveAfter implements ObserverInterface
         //TO DO
         //need to add weigtage field to attribute and get the weigtage of atttribute
         //instead of position
-        $weight = $this->catalogAttributeResource->getAttributePosition($input);
+        //$weight = $this->catalogAttributeResource->getAttributePosition($input);
         //$this->catalogAttribute->getCollection()->addFieldToFilter('attribute_id', $input)->load();
         //return ($weight > $max_weight?$weight:$max_weight);
-        return $weight;
+        $attributeInfo = $this->eavConfig->getAttribute(9, $input);
+        return $attributeInfo->getData('input_weight');
     }
 
     public function getAttributeIdByCode($attribute_code)
@@ -231,5 +268,11 @@ class CustomerSaveAfter implements ObserverInterface
     public function getOptionWeight($option)
     {
         return $this->catalogAttributeResource->getOptionWeight($option);
+    }
+
+    public function isCustomerGroup($input)
+    {
+        $attributeInfo = $this->eavConfig->getAttribute(9, $input);
+        return $attributeInfo->getData('is_customer_group');
     }
 }

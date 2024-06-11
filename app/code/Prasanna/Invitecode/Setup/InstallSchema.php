@@ -10,6 +10,7 @@ class InstallSchema implements \Magento\Framework\Setup\InstallSchemaInterface
         $setup->startSetup();
         $this->createInviteCodeTable($setup);
         $this->createAttributeWeightTable($setup);
+        $this->addCustomEavAttribute($setup);
         $setup->endSetup();
     }
 
@@ -58,6 +59,7 @@ class InstallSchema implements \Magento\Framework\Setup\InstallSchemaInterface
                 ->addColumn('active',
                     \Magento\Framework\DB\Ddl\Table::TYPE_SMALLINT,
                     null,
+                    ['default' => 1],
                     ['nullable'=> true],
                     'Active')
                 ->addColumn('created_date',
@@ -102,5 +104,32 @@ class InstallSchema implements \Magento\Framework\Setup\InstallSchemaInterface
                 ->setComment('Attribute Weight Table');
             $setup->getConnection()->createTable($table);
         }
+    }
+
+    protected function addCustomEavAttribute(SchemaSetupInterface $setup)
+    {
+        $setup->getConnection()
+            ->addColumn(
+                $setup->getTable('eav_attribute'),
+                'input_weight',
+                [
+                    'type'     => \Magento\Framework\DB\Ddl\Table::TYPE_INTEGER,
+                    'nullable' => true,
+                    'default'  => 0,
+                    'length'   => '11',
+                    'comment'  => 'Weight of the input',
+                ]
+            );
+        $setup->getConnection()->addColumn(
+            $setup->getTable('eav_attribute'),
+            'is_customer_group',
+            [
+                'type'     => \Magento\Framework\DB\Ddl\Table::TYPE_SMALLINT,
+                'nullable' => true,
+                'default'  => 0,
+                'length'   => '1',
+                'comment'  => 'Is the input is assigned to customer group',
+            ]
+        );
     }
 }

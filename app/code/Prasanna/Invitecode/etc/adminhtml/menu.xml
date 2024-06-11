@@ -3,6 +3,6 @@
     <menu>
         <add id="Prasanna_Invitecode::main" title="Invite Code" module="Prasanna_Invitecode" parent="Magento_Backend::content" sortOrder="50" resource="Magento_Backend::content" />
         <add id="Prasanna_Invitecode::invitecode" title="Manage Codes" module="Prasanna_Invitecode" parent="Prasanna_Invitecode::main" sortOrder="10" action="invitecode/invitecode/index" resource="Magento_Backend::content" />
-        <add id="Prasanna_Invitecode::ajax" title="Ajax Call" module="Prasanna_Invitecode" parent="Prasanna_Invitecode::invitecode" sortOrder="11" action="invitecode/ajax/index" resource="Magento_Backend::content" />
+<!--        <add id="Prasanna_Invitecode::ajax" title="Ajax Call" module="Prasanna_Invitecode" parent="Prasanna_Invitecode::invitecode" sortOrder="11" action="invitecode/ajax/index" resource="Magento_Backend::content" />-->
     </menu>
 </config>

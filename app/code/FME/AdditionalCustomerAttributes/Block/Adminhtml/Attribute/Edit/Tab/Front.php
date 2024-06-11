@@ -238,6 +238,40 @@ class Front extends Generic
             ]
         );
 
+        /* custom added for weightage of inputs by prasanna */
+        $fieldset->addField(
+            'input_weight',
+            'text',
+            [
+                'name' => 'input_weight',
+                'label' => __('Weight'),
+                'title' => __('Weight'),
+                'required' => true,
+                'note' => __(
+                    'Weight of the input field'
+                ),
+                'class' => ''
+            ]
+        );
+
+        $hide = [
+            1 => __('Yes'),
+            0=> __('No'),
+        ];
+        $fieldset->addField(
+            'is_customer_group',
+            'select',
+            [
+                'name' => 'is_customer_group',
+                'label' => __('Assigned to Customer Group'),
+                'title' => __('Assigned to Customer Group'),
+                'values' => $hide,
+                'note' => __(
+                    'Select yes if the input has options that are assigned to Customer group'
+                ),
+            ]
+        );
+
         $this->_eventManager->dispatch(
             'adminhtml_catalog_product_attribute_edit_frontend_prepare_form',
             ['form' => $form, 'attribute' => $attributeObject]
