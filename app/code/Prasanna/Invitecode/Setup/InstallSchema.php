@@ -131,5 +131,16 @@ class InstallSchema implements \Magento\Framework\Setup\InstallSchemaInterface
                 'comment'  => 'Is the input is assigned to customer group',
             ]
         );
+        $setup->getConnection()->addColumn(
+            $setup->getTable('eav_attribute'),
+            'has_code',
+            [
+                'type'     => \Magento\Framework\DB\Ddl\Table::TYPE_SMALLINT,
+                'nullable' => true,
+                'default'  => 0,
+                'length'   => '1',
+                'comment'  => 'Is the input has code',
+            ]
+        );
     }
 }

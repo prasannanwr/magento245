@@ -102,6 +102,11 @@ class CustomerSaveAfter implements ObserverInterface
     {
         $post = $this->request->getPost();
 
+        //log
+        $writer = new \Zend_Log_Writer_Stream(BP . '/var/log/custom.log');
+        $logger = new \Zend_Log();
+        $logger->addWriter($writer);
+
         try {
             $customerId = $observer->getEvent()->getCustomer()->getId();
             $customerObj = $this->customerRepository->getById($customerId);
@@ -123,7 +128,8 @@ class CustomerSaveAfter implements ObserverInterface
                     //find the highest weightage among the inputs having options
                     $attribute_type = $this->getAttributeType($attribute_code);
                     //if ((in_array($attribute_type, $inputTypes) && $this->isCustomerGroup($attribute_code) == 1) || $post[$key] == "fme_invite_code") {
-                    if ($this->isCustomerGroup($attribute_code) == 1 || $post[$key] == "fme_invite_code") {
+                    //if ($this->isCustomerGroup($attribute_code) == 1 || $post[$key] == "fme_invite_code") {
+                    if ($this->isCustomerGroup($attribute_code) == 1) {
                         //find the weight of the input
                         if($value != '')
                         {
@@ -140,18 +146,34 @@ class CustomerSaveAfter implements ObserverInterface
                     }
                 }
             }
-
+//echo "weight: ".$weight."<br>";
+            $logger->info('weight: '.$weight);
             // now find the highest weight of option item for checkbox, multiselect
             if($weight != '') {
-                $highest_weight_input = "fme_".$highest_weight_input;
-                //echo $highest_weight_input;exit;
-                if($highest_weight_input == "fme_invite_code") {
-                    $code = $post["fme_invite_code"];
-                    $inviteInfo = $this->inviteCodeCollection->addFieldToFilter('code', $code)->addFieldToFilter('active', 1)->getFirstItem();
+
+                //echo "highest wt input:".$highest_weight_input;
+
+                $highest_weight_input_fme = "fme_".$highest_weight_input;
+                $logger->info('high wt input: '.$highest_weight_input);
+                //$input_has_code = $this->inputHasCode($highest_weight_input);
+                //if($highest_weight_input == "fme_invite_code") {
+                $logger->info('input has code: '.$this->inputHasCode($highest_weight_input));
+                if($this->inputHasCode($highest_weight_input) == 1)
+                {
+                    //$code = $post["fme_invite_code"];
+                    $logger->info('highest wt int fme:'.$highest_weight_input_fme);
+                    $code = trim($post[$highest_weight_input_fme]);
+                    $logger->info('invite code:'. $code);
+                    $inviteInfo = $this->inviteCodeCollection->addFieldToFilter('attribute_code', $highest_weight_input)->addFieldToFilter('code', $code)->addFieldToFilter('active', 1)->getFirstItem();
                     if(!$inviteInfo->isEmpty()){
+                        $logger->info('code match:');
+                        $logger->info('count:'. $inviteInfo->getData('count'));
+                        $logger->info('reusable:'. $inviteInfo->getData('reusable'));
+
                         if($inviteInfo->getData('count') <= 0 || ($inviteInfo->getData('count') > 0 && $inviteInfo->getData('reusable') == 1))
                         {
                             $customerGroupId = $inviteInfo->getData('customer_group');
+                            $logger->info('customer group:'. $customerGroupId);
                             $count = $inviteInfo->getData('count');
                             //update the count
                             $inviteData = $this->inviteCodeCollection->addFieldToFilter('code', $code);
@@ -161,13 +183,15 @@ class CustomerSaveAfter implements ObserverInterface
                                 $code->save();
                             }
                         }
+                    } else {
+                        $logger->info('code not match');
                     }
                 } else {
                     $inputTypes = array("multiselect", "checkbox");
                     if (in_array($highest_weight_input_type, $inputTypes)) {
                         $checkboxValues = [];
                         //$checkboxValues[] = $key2;
-                        $highest_weight_post_item = $this->request->getParam($highest_weight_input);
+                        $highest_weight_post_item = $this->request->getParam($highest_weight_input_fme);
                         $option_weight_max = '';
                         foreach ($highest_weight_post_item as $key => $value) {
                             if ($value > 0) {
@@ -274,5 +298,11 @@ class CustomerSaveAfter implements ObserverInterface
     {
         $attributeInfo = $this->eavConfig->getAttribute(9, $input);
         return $attributeInfo->getData('is_customer_group');
+    }
+
+    public function inputHasCode($input)
+    {
+        $attributeInfo = $this->eavConfig->getAttribute(9, $input);
+        return $attributeInfo->getData('has_code');
     }
 }

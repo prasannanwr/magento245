@@ -88,18 +88,18 @@
                 </editor>
             </settings>
         </column>
-<!--        <column name="attribute_code">-->
-<!--            <settings>-->
-<!--                <filter>text</filter>-->
-<!--                <label translate="true">Attribute Code</label>-->
-<!--                <editor>-->
-<!--                    <editorType>text</editorType>-->
-<!--                    <validation>-->
-<!--                        <rule name="required-entry" xsi:type="boolean">false</rule>-->
-<!--                    </validation>-->
-<!--                </editor>-->
-<!--            </settings>-->
-<!--        </column>-->
+        <column name="attribute_code">
+            <settings>
+                <filter>text</filter>
+                <label translate="true">Attribute Code</label>
+                <editor>
+                    <editorType>text</editorType>
+                    <validation>
+                        <rule name="required-entry" xsi:type="boolean">false</rule>
+                    </validation>
+                </editor>
+            </settings>
+        </column>
         <column name="code">
             <settings>
                 <filter>text</filter>
