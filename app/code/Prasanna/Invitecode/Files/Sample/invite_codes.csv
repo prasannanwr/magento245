@@ -1,0 +1,3 @@
+entity_id,attribute_code,code,reusable,case_sensitive,customer_group,count,active
+,"attribute_code","invite code",1,0,1,0,1
+,"attribute_code2","invite code 2",1,0,1,0,1

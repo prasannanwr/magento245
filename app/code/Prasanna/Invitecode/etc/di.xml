@@ -13,4 +13,11 @@
             </argument>
         </arguments>
     </type>
+    <type name="Magento\ImportExport\Model\Import\SampleFileProvider">
+        <arguments>
+            <argument name="samples" xsi:type="array">
+                <item name="invite_codes" xsi:type="string">Prasanna_Invitecode</item>
+            </argument>
+        </arguments>
+    </type>
 </config>

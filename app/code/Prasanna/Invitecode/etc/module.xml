@@ -4,6 +4,7 @@
     <module name="Prasanna_Invitecode" setup_version="1.0.2">
         <sequence>
             <module name="FME_AdditionalCustomerAttributes" />
+            <module name="Magento_ImportExport" />
         </sequence>
     </module>
 </config>

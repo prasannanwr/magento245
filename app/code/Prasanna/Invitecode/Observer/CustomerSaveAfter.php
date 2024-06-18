@@ -160,19 +160,18 @@ class CustomerSaveAfter implements ObserverInterface
                         $logger->info('count:' . $inviteInfo->getData('count'));
                         $logger->info('reusable:' . $inviteInfo->getData('reusable'));
 
-                        if ($inviteInfo->getData('count') <= 0 || ($inviteInfo->getData('count') > 0 && $inviteInfo->getData('reusable') == 1)) {
-                            $customerGroupId = $inviteInfo->getData('customer_group');
-                            $logger->info('customer group:' . $customerGroupId);
-                            $count = $inviteInfo->getData('count');
-                            //update the count
-//                            $inviteData = $this->inviteCodeCollection->addFieldToFilter('code', $code);
-//                            foreach ($inviteData as $code) {
-//                                $code->setData('count', $count+1);
-//                                $code->save();
-//                            }
-                            $this->updateUsesCount($code, $count);
+                        //check for case sensitive
+                        if (($inviteInfo->getData('case_sensitive') == 1 && $code === $inviteInfo->getData('code')) || ($inviteInfo->getData('case_sensitive') == 0 || $inviteInfo->getData('case_sensitive') == 2)) {
+                            if ($inviteInfo->getData('count') <= 0 || ($inviteInfo->getData('count') > 0 && $inviteInfo->getData('reusable') == 1)) {
+                                $customerGroupId = $inviteInfo->getData('customer_group');
+                                $logger->info('customer group:' . $customerGroupId);
+                                $count = $inviteInfo->getData('count');
+                                $this->updateUsesCount($code, $count);
+                            } else {
+                                $logger->info('invite code use count exceeded.');
+                            }
                         } else {
-                            $logger->info('invite code use count exceeded.');
+                            $logger->info('case dont  match');
                         }
                     } else {
                         $logger->info('code dont  match');
