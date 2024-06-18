@@ -35,7 +35,7 @@ class Index extends \Magento\Backend\App\Action
     {
         $resultPage = $this->resultPageFactory->create();
         //$resultPage->setActiveMenu('Prasanna_Invitecode::invitecode');
-        $resultPage->getConfig()->getTitle()->prepend(__("Manage Invite Code"));
+        $resultPage->getConfig()->getTitle()->prepend(__("Manage Codes"));
         return $resultPage;
     }
 }

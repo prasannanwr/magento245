@@ -1,8 +1,10 @@
 <?xml version="1.0"?>
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Backend:etc/menu.xsd">
     <menu>
-        <add id="Prasanna_Invitecode::main" title="Invite Code" module="Prasanna_Invitecode" parent="Magento_Backend::content" sortOrder="50" resource="Magento_Backend::content" />
-        <add id="Prasanna_Invitecode::invitecode" title="Manage Codes" module="Prasanna_Invitecode" parent="Prasanna_Invitecode::main" sortOrder="10" action="invitecode/invitecode/index" resource="Magento_Backend::content" />
+<!--        <add id="Prasanna_Invitecode::main" title="Registration DB" module="Prasanna_Invitecode" parent="Magento_Backend::content" sortOrder="50" resource="Magento_Backend::content" />-->
+<!--        <add id="Prasanna_Invitecode::invitecode" title="Manage Codes" module="Prasanna_Invitecode" parent="Prasanna_Invitecode::main" sortOrder="10" action="invitecode/invitecode/index" resource="Magento_Backend::content" />-->
 <!--        <add id="Prasanna_Invitecode::ajax" title="Ajax Call" module="Prasanna_Invitecode" parent="Prasanna_Invitecode::invitecode" sortOrder="11" action="invitecode/ajax/index" resource="Magento_Backend::content" />-->
+        <add id="Prasanna_Invitecode::main" title="Registration DB" translate="title" module="Prasanna_Invitecode" sortOrder="50" parent="WePay_Extensions::system_wepay_custom_inventory" resource="WePay_Extensions::system_wepay_custom_inventory"/>
+        <add id="Prasanna_Invitecode::invitecode" title="Manage Codes" module="Prasanna_Invitecode" parent="Prasanna_Invitecode::main" sortOrder="10" action="invitecode/invitecode/index" resource="WePay_Extensions::system_wepay_custom_inventory" />
     </menu>
 </config>

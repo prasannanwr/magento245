@@ -272,6 +272,20 @@ class Front extends Generic
             ]
         );
 
+        $fieldset->addField(
+            'has_code',
+            'select',
+            [
+                'name' => 'has_code',
+                'label' => __('Input has code assigned'),
+                'title' => __('Input has code assigned'),
+                'values' => $hide,
+                'note' => __(
+                    'Select yes if the input has code assigned to it'
+                ),
+            ]
+        );
+
         $this->_eventManager->dispatch(
             'adminhtml_catalog_product_attribute_edit_frontend_prepare_form',
             ['form' => $form, 'attribute' => $attributeObject]

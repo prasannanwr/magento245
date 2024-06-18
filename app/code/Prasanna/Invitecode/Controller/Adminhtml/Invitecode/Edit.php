@@ -41,7 +41,7 @@ class Edit extends \Prasanna\Invitecode\Controller\Adminhtml\Invitecode
         if ($id) {
             $model->load($id);
             if (!$model->getId()) {
-                $this->messageManager->addErrorMessage(__('This Invite Code no longer exists.'));
+                $this->messageManager->addErrorMessage(__('This code no longer exists.'));
                 /** @var \Magento\Backend\Model\View\Result\Redirect $resultRedirect */
                 $resultRedirect = $this->resultRedirectFactory->create();
                 return $resultRedirect->setPath('*/*/');
@@ -53,8 +53,8 @@ class Edit extends \Prasanna\Invitecode\Controller\Adminhtml\Invitecode
         /** @var \Magento\Backend\Model\View\Result\Page $resultPage */
         $resultPage = $this->resultPageFactory->create();
         $this->initPage($resultPage)->addBreadcrumb(
-            $id ? __('Edit Invite Code') : __('New Invite Code'),
-            $id ? __('Edit Invite Code') : __('New Invite Code')
+            $id ? __('Edit Invite Code') : __('New Code'),
+            $id ? __('Edit Invite Code') : __('New Code')
         );
         $resultPage->getConfig()->getTitle()->prepend(__('Invite Codes'));
         $resultPage->getConfig()->getTitle()->prepend($model->getId() ? __('Edit Invite Code %1', $model->getId()) : __('New Invite Code'));
