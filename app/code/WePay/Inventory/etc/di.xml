@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+   <virtualType name="WePay\Inventory\Model\ResourceModel\Grid\Stat\Collection" type="Magento\Framework\View\Element\UiComponent\DataProvider\SearchResult">
+        <arguments>
+            <argument name="mainTable" xsi:type="string">wepay_status_log</argument>
+            <argument name="resourceModel" xsi:type="string">WePay\Inventory\Model\ResourceModel\StatusLogs</argument>
+        </arguments>
+    </virtualType>
+   <virtualType name="WePay\Inventory\Model\ResourceModel\Grid\Err\Collection" type="Magento\Framework\View\Element\UiComponent\DataProvider\SearchResult">
+        <arguments>
+            <argument name="mainTable" xsi:type="string">wepay_error_log</argument>
+            <argument name="resourceModel" xsi:type="string">WePay\Inventory\Model\ResourceModel\ErrorLogs</argument>
+        </arguments>
+    </virtualType>
+
+    <type name="Magento\Framework\View\Element\UiComponent\DataProvider\CollectionFactory">
+        <arguments>
+            <argument name="collections" xsi:type="array">
+                <item name="statuslogs_grid_list_data_source" xsi:type="string">WePay\Inventory\Model\ResourceModel\Grid\Stat\Collection</item>
+                <item name="errorlogs_grid_list_data_source" xsi:type="string">WePay\Inventory\Model\ResourceModel\Grid\Err\Collection</item>
+            </argument>
+        </arguments>
+    </type>
+</config>

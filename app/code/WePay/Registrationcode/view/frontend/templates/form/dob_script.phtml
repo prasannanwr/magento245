@@ -1,0 +1,25 @@
+<?php
+//if age validation is enabled
+$validate_age = 1;
+$minimum_age = $this->getMinimumAge();
+?>
+<script type="text/x-magento-init">
+    {
+       "*": {
+           "ageValidation" : { "param" : "<?=$minimum_age?>"}
+       }
+    }
+</script>
+<?php if ($validate_age == 1) : ?>
+<script>
+    require([
+        'jquery'
+    ], function($) {
+       // if(!document.getElementsByClassName('_has-datepicker').classList.contains("validate-dob")) {
+            //document.querySelector('._has-datepicker').classList.add('validate-dob');
+            $(".customer-dob input").addClass('validate-dob');
+            //$("#wepay_dob").addClass('validate-dob');
+       // }
+    });
+</script>
+<?php endif; ?>

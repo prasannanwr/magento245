@@ -1,0 +1,23 @@
+<?xml version="1.0" ?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <virtualType name="WePay\Registrationcode\Model\ResourceModel\Registrationcode\Grid\Collection" type="Magento\Framework\View\Element\UiComponent\DataProvider\SearchResult">
+        <arguments>
+            <argument name="mainTable" xsi:type="string">registration_code</argument>
+            <argument name="resourceModel" xsi:type="string">WePay\Registrationcode\Model\ResourceModel\Registrationcode\Collection</argument>
+        </arguments>
+    </virtualType>
+    <type name="Magento\Framework\View\Element\UiComponent\DataProvider\CollectionFactory">
+        <arguments>
+            <argument name="collections" xsi:type="array">
+                <item name="wepay_registrationcode_listing_data_source" xsi:type="string">WePay\Registrationcode\Model\ResourceModel\Registrationcode\Grid\Collection</item>
+            </argument>
+        </arguments>
+    </type>
+    <type name="Magento\ImportExport\Model\Import\SampleFileProvider">
+        <arguments>
+            <argument name="samples" xsi:type="array">
+                <item name="registration_codes" xsi:type="string">WePay_Registrationcode</item>
+            </argument>
+        </arguments>
+    </type>
+</config>

@@ -1,0 +1,12 @@
+<input type="hidden" name="<?php echo $block->getNamePrefix() ?>" value="" /><!-- this is send if nothing is checked -->
+<ul class="checkboxes">
+    <?php foreach ($block->getValues() as $name => $label): ?>
+        <li>
+            <input type="checkbox" value="<?php echo $name?>" name="<?php echo $block->getNamePrefix() ?>[]"
+                    id="<?php echo $block->getHtmlId() . '_' . $name ?>"
+                    <?php echo ($block->getIsChecked($name) ? ' checked="checked"' : '') ?>/>
+            <label for="<?php echo $block->getHtmlId() . '_' . $name ?>">
+            </label>
+        </li>
+    <?php endforeach;?>
+</ul>

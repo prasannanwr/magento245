@@ -123,10 +123,10 @@ class CustomerSaveAfter implements ObserverInterface
                 //if the input is from the fme custom attributes only
                 if (stripos($key, 'fme_') !== false) {
                     $attribute_code = str_replace('fme_', '', $key);
-                    //find the highest weightage among the inputs having options
-                    $attribute_type = $this->getAttributeType($attribute_code);
                     //if ((in_array($attribute_type, $inputTypes) && $this->isCustomerGroup($attribute_code) == 1) || $post[$key] == "fme_invite_code") {
                     if ($this->isCustomerGroup($attribute_code) == 1) {
+                        //find the highest weightage among the inputs having options
+                        $attribute_type = $this->getAttributeType($attribute_code);
                         //find the weight of the input
                         if ($value != '') {
                             // $attribute_id = $this->getAttributeIdByCode($attribute_code);

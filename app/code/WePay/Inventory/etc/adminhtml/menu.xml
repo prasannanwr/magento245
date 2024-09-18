@@ -1,0 +1,45 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Backend:etc/menu.xsd">
+    <menu>
+        <update id="WePay_Extensions::wepayextensions" 
+                title="WePay Extensions" 
+                module="Magento_Backend" 
+                sortOrder="70" 
+                resource="WePay_Extensions::wepayextensions"/>     
+        
+        <add id="WePay_Extensions::system_wepay_custom_inventory" 
+            title="Inventory" 
+            translate="title" 
+            module="WePay_Inventory" 
+            sortOrder="10" 
+            parent="WePay_Extensions::wepayextensions" 
+            resource="WePay_Extensions::system_wepay_custom_inventory"/>
+
+        <add id="Magento_Backend::system_configuration" 
+            title="Configuration" 
+            translate="title" 
+            module="WePay_Inventory" 
+            sortOrder="10" 
+            parent="WePay_Extensions::system_wepay_custom_inventory" 
+            action="admin/system_config/edit/section/wepay_inventory" 
+            resource="WePay_Extensions::system_configuration"/>
+            
+        <add id="Magento_Backend::system_wepay_custom_log_status" 
+            title="Status Logs" 
+            translate="title" 
+            module="WePay_Inventory" 
+            sortOrder="20" 
+            parent="WePay_Extensions::system_wepay_custom_inventory" 
+            action="wepay_inventory/statuslogs/" 
+            resource="WePay_Extensions::system_wepay_custom_inventory"/>
+        
+        <add id="Magento_Backend::system_wepay_custom_log_error" 
+            title="Error Logs" 
+            translate="title" 
+            module="WePay_Inventory" 
+            sortOrder="30" 
+            parent="WePay_Extensions::system_wepay_custom_inventory" 
+            action="wepay_inventory/errorlogs/"     
+            resource="WePay_Extensions::system_wepay_custom_inventory"/>
+    </menu>
+</config>

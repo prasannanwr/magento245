@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+<!--
+/**
+ *
+ * @category : WePay
+ * @Package  : WePay_AdditionalCustomerAttributes
+ * @Author   : WePay Extensions <support@wepayextensions.com>
+ * @copyright Copyright 2018 © wepayextensions.com All right reserved
+ * @license https://wepayextensions.com/LICENSE.txt
+ */
+ -->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Store:etc/config.xsd">
+    <default>
+        <wepay_additionalcustomerattributes>
+        </wepay_additionalcustomerattributes>
+        <general>
+            <validator_data>
+                <input_types>
+                    <checkbox>checkbox</checkbox>
+                    <radio>radio</radio>
+                    <file>file</file>
+                    <image>image</image>
+                    <video>video</video>
+                    <audio>audio</audio>
+                </input_types>
+            </validator_data>
+        </general>
+    </default>
+</config>

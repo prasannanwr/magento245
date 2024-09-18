@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<!--
+/**
+ *
+ * @category : WePay
+ * @Package  : WePay_AdditionalCustomerAttributes
+ * @Author   : WePay Extensions <support@wepayextensions.com>
+ * @copyright Copyright 2018 © wepayextensions.com All right reserved
+ * @license https://wepayextensions.com/LICENSE.txt
+ */
+-->
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" layout="admin-2columns-left"
+      xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <body>
+        <referenceBlock name="customer_form">
+             <block class="WePay\AdditionalCustomerAttributes\Block\Adminhtml\Customer\Edit\Tabs" name="aca" />
+        </referenceBlock>    
+    </body>
+</page>

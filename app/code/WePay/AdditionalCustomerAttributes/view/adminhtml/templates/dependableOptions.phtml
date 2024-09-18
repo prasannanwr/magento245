@@ -1,0 +1,85 @@
+<?php
+/**
+ *
+ * @category : WePay
+ * @Package  : WePay_AdditionalCustomerAttributes
+ * @Author   : WePay Extensions <support@wepayextensions.com>
+ * @copyright Copyright 2018 © wepayextensions.com All right reserved
+ * @license https://wepayextensions.com/LICENSE.txt
+ */
+// @codingStandardsIgnoreFile
+
+?>
+<?php
+    $attribute = $block->getCurrentAttribute();
+    $wepayDid = $attribute->getData('wepay_did')!=0?$attribute->getData('wepay_did'):'';
+    $wepayDvalue = $attribute->getData('wepay_dvalue') != null?$attribute->getData('wepay_dvalue'):'';
+    //$wepayDvalue = is_array($wepayDvalue)?implode(",", $wepayDvalue):$wepayDvalue;
+?>
+<fieldset class="fieldset" id="guardianOptions">
+    <legend class="legend">
+        <span><?php echo $block->escapeHtml(__('Select Guardian Options (Values of the Guardian Attribute)'))?></span>
+    </legend>
+    <div id="manage-guardianoptions-panel" data-index="attribute_guardianoptions_select_container">
+        <table class="admin__control-table" data-index="attribute_guardianoptions_select">
+            <tr>
+                <td id="wepay_dvalue_td">
+                    <!-- <select name="wepay_dvalue[]" multiple>
+                        <option value=""> Please Selection Options </option>
+                    </select> -->
+                </td>
+            </tr>
+        </table>
+        <input type="hidden" id="wepay_dcode" name="wepay_dcode" value="<?php echo $attribute->getWepayDcode();?>">
+        <input type="hidden" id="wepay_dpath" name="wepay_dpath" value="<?php echo $attribute->getWepayDpath();?>">
+    </div>
+    <script>
+        require(['jquery'], function($){
+            $(function() {
+                function sendRequest(requestMethod) {
+                    $.ajax({
+                        method: requestMethod,
+                        url: "<?php  echo $block->getAjaxUrl(); ?>",
+                        data: { id: $('#wepay_did').val(), oldid: '<?php echo $wepayDid; ?>', oldvalue: '<?php echo $wepayDvalue; ?>'},
+                        dataType: "json",
+                        showLoader: true
+                    })
+                    .done(function( response ) {
+                        $('#wepay_dvalue_td').html(response.html);
+                        $('#wepay_dcode').val(response.attribute_code);
+                        $('#wepay_dpath').val(response.wepay_dpath);
+                    });
+                }
+
+                $('#guardianOptions').hide();
+                if($('#wepay_dependable') && $('#wepay_dependable').val() == "1") {
+                    $('#guardianOptions').show();
+                    $('#wepay_dvalue').addClass('required-entry');
+                    sendRequest("GET");
+                }
+                $('#wepay_dependable').change(function(){
+                    if( $('#wepay_dependable').val() == 1) {
+                        $('#guardianOptions').show();
+                        $('#wepay_dvalue').addClass('required-entry');
+                        sendRequest("POST");
+                    } else {
+                        $('#guardianOptions').hide();
+                        $('#wepay_dvalue').removeClass('required-entry');
+                    }
+                });
+                if ($('#wepay_did')) {
+                    $('#wepay_did').change(function(){
+                        if( $('#wepay_dependable').val() != "") {
+                            $('#guardianOptions').show();
+                            $('#wepay_dvalue').addClass('required-entry');
+                            sendRequest("POST");
+                        } else {
+                            $('#guardianOptions').hide();
+                            $('#wepay_dvalue').removeClass('required-entry');
+                        }
+                    });
+                }
+            });
+        });
+    </script>
+</fieldset>

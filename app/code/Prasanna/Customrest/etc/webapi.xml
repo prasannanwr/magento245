@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<routes xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Webapi:etc/webapi.xsd">
+    <route url="/V1/custom/endpoint" method="GET">
+        <service class="Prasanna\Customrest\Api\CustomInterface" method="getCustomData"/>
+        <resources>
+            <resource ref="anonymous"/>
+        </resources>
+    </route>
+
+    <route url="/V1/rest_dev/getProduct/:id" method="GET">
+        <service class="Prasanna\Customrest\Api\ProductRepositoryInterface" method="getItem"/>
+        <resources>
+            <resource ref="Dev_RestApi::products_get" />
+        </resources>
+    </route>
+    <route url="/V1/rest_dev/setDescription" method="PUT">
+        <service class="Prasanna\Customrest\Api\ProductRepositoryInterface" method="setDescription"/>
+        <resources>
+            <resource ref="Prasanna_Customrest::products_set_description" />
+        </resources>
+    </route>
+</routes>

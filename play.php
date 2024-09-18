@@ -1,4 +1,46 @@
 <?php
+
+//code practice
+
+/* Decrypt the password from the encoded one
+* output = aP1pL5e
+*/
+
+function decryptPassword($s)
+{
+    $length = strlen($s);
+    $password = '';
+    $nums = '';
+    for($i=0;$i<=$length;$i++)
+    {
+        if (is_numeric($s[$i])) {
+            if ($s[$i] == 0) {
+                //replace it with last number at begining of string
+                $password .= substr($nums,-1);
+                $nums = substr_replace($nums,'',-1);
+            } else {
+                $nums .= $s[$i];
+                //$password .= $s[$i];
+            }
+        }
+        $next = $i+1;
+        if(ctype_upper($s[$i]) && ctype_lower($s[$next])) {
+            $password .= $s[$next] . $s[$i];
+            $i++;
+        } elseif($i == $length-1) {
+            $password .=$s[$i];
+        }
+    }
+    return $password;
+}
+
+$string = "51Pa*0Lp*0e";
+$output = "aP1pL5e";
+//51Pa * 0Lp * 0e
+//$pass = decryptPassword($string);
+//echo $pass;
+//exit;
+
 use Magento\Framework\App\Bootstrap;
 require __DIR__ . '/app/bootstrap.php';
 $bootstrap = Bootstrap::create(BP, $_SERVER);
@@ -15,7 +57,106 @@ $optionCollection = $objectManager->create('\Prasanna\Invitecode\Model\ResourceM
 
 $eavEntityFactory = $objectManager->create('\Magento\Eav\Model\Config');
 $inviteCodeCollection = $objectManager->create('\Prasanna\Invitecode\Model\ResourceModel\Invitecode\Collection');
+$registrationCodeCollection = $objectManager->create('\WePay\Registrationcode\Model\ResourceModel\Registrationcode\Collection');
+
+//get attribute options
+$attribute_code = 'test_dd3';
+$attribute = $eavConfig->getAttribute(9, $attribute_code);
+$options = $attribute->getSource()->getAllOptions();
+$optionsArray = array();
+foreach ($options as $option) {
+    if(!empty($option['value'])) {
+        array_push($optionsArray, $option['value']);
+    }
+}
+var_dump($optionsArray);
+exit;
+
 $highest_weight_post_item = "SUMMER";
+$post_code = "xyz@gmail.com.np";
+$attributeCode = 'company_email';
+$registrationInfo = $registrationCodeCollection->addFieldToFilter('attribute_code', $attributeCode)->addFieldToFilter('active', 1);
+$registrationItem = $registrationInfo->getFirstItem();
+$operation = $registrationItem->getData('comparison_operator');
+$compare_code = $registrationItem->getData('code');
+//echo $operation;
+switch ($operation) {
+    case 1:
+//        $registrationInfo = $registrationInfo->addFieldToFilter('code', ['in' => $post_code])->getFirstItem();
+//        $registrationInfo = $registrationInfo->addFieldToFilter('code', ['in' => $post_code])->getSelect();
+     //   echo $registrationInfo;exit;
+        if(strpos($post_code, $compare_code)) {
+            echo 'exits';
+        } else {
+            echo 'dont exist';
+        }
+exit;
+
+//echo $registrationInfo;exit;
+        break;
+    case 2:
+       // $registrationInfo = $registrationInfo->addFieldToFilter('code', $post_code)->getFirstItem();
+        if(!strpos($post_code, $compare_code)) {
+            echo 'dont exist';
+        } else {
+            echo 'exist';
+        }
+        exit;
+        break;
+    case 3:
+        //$registrationInfo = $registrationInfo->addFieldToFilter('code', $post_code)->getFirstItem();
+        $ends = substr($post_code, strpos($post_code, '.') + 1);
+        //if (str_ends_with($post_code, $compare_code)) {
+        if($ends == $compare_code)
+        {
+            echo "ends with";
+        } else {
+            echo "dont ends with";
+        }
+        exit;
+        break;
+    case 4:
+        //$registrationInfo = $registrationInfo->addFieldToFilter('code', $post_code)->getFirstItem();
+        $ends = substr($post_code, strpos($post_code, '.') + 1);
+        //if (!str_ends_with($post_code, $compare_code)) {
+        //echo $ends;exit;
+        if($ends !== $compare_code)
+        {
+            echo "dont ends with";
+        } else {
+            echo "ends with";
+        }
+        exit;
+        break;
+    case 5:
+        //$registrationInfo = $registrationInfo->addFieldToFilter('code', $post_code)->getFirstItem();
+        //begins with
+        if(str_starts_with($post_code, $compare_code))
+        {
+            echo "starts with";
+        } else {
+            echo "doesnot starts with";
+        }
+        exit;
+        break;
+    case 6:
+        //$registrationInfo = $registrationInfo->addFieldToFilter('code', $post_code)->getFirstItem();
+        if(!str_starts_with($post_code, $compare_code))
+        {
+            echo "doesnot starts with";
+        } else {
+            echo "starts with";
+        }
+        exit;
+        break;
+    default:
+        $registrationInfo = $registrationInfo->addFieldToFilter('code', $post_code)->getFirstItem();
+}
+echo $registrationInfo->getSelectSql(true);
+exit;
+echo $registrationInfo->getData('attribute_code');
+exit;
+
 $inviteInfo = $inviteCodeCollection->addFieldToFilter('code', $highest_weight_post_item)->getFirstItem();
 if(!$inviteInfo->isEmpty()){
     echo $inviteInfo->getData('reusable');

@@ -1,0 +1,41 @@
+<?php
+    $controller = $block->getCustomUrl();
+    echo $block->getButtonHtml();
+?>
+<script type="text/javascript">
+    require([
+        'jquery',
+        'Magento_Ui/js/modal/alert',
+        'mage/url'
+    ], function($, alert, urlBuilder) {
+        $(document).ready(function() {
+            $('#btn_id').on('click', function() {
+                var url = '<?= $block->getCustomUrl();?>'
+
+                $.ajax({
+                    url: url,
+                    type: 'POST',
+                    dataType: 'json',
+                    data: {form_key: window.FORM_KEY},
+                    showLoader: true,
+                    success: function(response) {
+                        console.log(response);
+                        location.reload();
+
+                        // // Show alert after the page refreshes
+                        // setTimeout(function() {
+                        //     alert({
+                        //         title: 'Success',
+                        //         content: 'Page Refreshed Successfully!'
+                        //     });
+                        // }, 2000); // Adjust the delay as needed
+                    },
+                    error: function(xhr, status, error) {
+                        var err = eval("(" + xhr.responseText + ")");
+                        console.log(err.Message);
+                    }
+                });
+            });
+        });
+    });
+</script>

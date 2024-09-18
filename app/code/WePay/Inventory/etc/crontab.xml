@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Cron:etc/crontab.xsd">
+    <group id="default">
+        <job name="wepay_inventory_cron_one_setup_job" instance="WePay\Inventory\Cron\CronOne" method="execute">
+            <config_path>crontab/default/jobs/wepay_inventory_cron_one_setup_job/schedule/cron_expr</config_path>
+        </job>
+        <job name="wepay_inventory_cron_two_setup_job" instance="WePay\Inventory\Cron\CronTwo" method="execute">
+            <config_path>crontab/default/jobs/wepay_inventory_cron_two_setup_job/schedule/cron_expr</config_path>
+        </job>
+    </group>
+</config>

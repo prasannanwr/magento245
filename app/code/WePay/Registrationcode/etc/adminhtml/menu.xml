@@ -1,0 +1,26 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Backend:etc/menu.xsd">
+    <menu>
+	    <update id="WePay_Extensions::wepayextensions"
+                title="WePay Extensions"
+                module="Magento_Backend"
+                sortOrder="70"
+                resource="WePay_Extensions::wepayextensions"/>
+<!--        <add id="WePay_Registrationcode::main" title="Registration DB" module="WePay_Registrationcode" parent="Magento_Backend::content" sortOrder="50" resource="Magento_Backend::content" />-->
+<!--        <add id="WePay_Registrationcode::registrationcode" title="Manage Codes" module="WePay_Registrationcode" parent="WePay_Registrationcode::main" sortOrder="10" action="registrationcode/registrationcode/index" resource="Magento_Backend::content" />-->
+<!--        <add id="WePay_Registrationcode::ajax" title="Ajax Call" module="WePay_Registrationcode" parent="WePay_Registrationcode::registrationcode" sortOrder="11" action="registrationcode/ajax/index" resource="Magento_Backend::content" />-->
+        <add id="WePay_Registrationcode::registrationcode"
+             title="Registration Code"
+             module="WePay_Registrationcode"
+             sortOrder="10"
+             parent="WePay_Extensions::wepayextensions"
+             resource="WePay_Registrationcode::registrationcode"/>
+        <add id="WePay_Registrationcode::managecode"
+		     title="Manage Codes"
+		     module="WePay_Registrationcode"
+		     parent="WePay_Registrationcode::registrationcode"
+		     sortOrder="10"
+		     action="registrationcode/registrationcode/index"
+		     resource="WePay_Extensions::system_wepay_custom_inventory" />
+    </menu>
+</config>

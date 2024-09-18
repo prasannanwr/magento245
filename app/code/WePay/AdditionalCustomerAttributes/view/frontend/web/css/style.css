@@ -1,0 +1,15 @@
+/**
+ *
+ * @category : WePay
+ * @Package  : WePay_AdditionalCustomerAttributes
+ * @Author   : WePay Extensions <support@wepayextensions.com>
+ * @copyright Copyright 2018 © wepayextensions.com All right reserved
+ * @license https://wepayextensions.com/LICENSE.txt
+ */
+.field .control._with-tooltip input, .field .control._with-tooltip textarea, .field .control._with-tooltip select, .field .control._with-tooltip fieldset  {
+    margin-right: 10px;
+    width: calc(100% - 36px);
+}
+.field .control fieldset.coaf input {
+    width: 10px;
+}

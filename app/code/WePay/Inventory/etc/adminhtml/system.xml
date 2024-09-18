@@ -1,0 +1,112 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
+    <system>
+        <tab id="wepayextensions" translate="label" sortOrder="1">
+            <label>WePay Extensions</label>
+        </tab>
+        <section id="wepay_inventory" translate="label" sortOrder="130" showInDefault="1" showInWebsite="1" showInStore="1">
+            <class>separator-top</class>
+            <label>Inventory</label>
+            <tab>wepayextensions</tab>
+            <resource>WePay_Inventory::wepayinventory_config</resource>
+            <group id="general" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="0" showInStore="0">
+                <label>General Configuration</label>
+                <field id="wg_inventory_username" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Wg Username</label>
+                </field>
+                <field id="wg_inventory_password" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Wg Password</label>
+                </field>
+                <field id="wg_inventory_mage_bearer" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Magento Bearer</label>
+                </field>
+                <field id="wg_inventory_url_product" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Wg Url Product</label>
+                </field>
+                <field id="wg_inventory_url_stock" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Wg Url Stock</label>
+                </field>
+                <field id="wg_inventory_url_base" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Magento Url Base</label>
+                </field>
+                <field id="wg_inventory_force_update" translate="label" type="select" sortOrder="1" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Force Update</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="wg_inventory_margin" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Magento Margin</label>
+                </field>
+                <field id="wg_inventory_min_value" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Magento Min Value</label>
+                    <validate>validate-number</validate>
+                </field>
+                <field id="wg_inventory_max_value" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Magento Max Value</label>
+                    <validate>validate-number</validate>
+                </field>
+                <field id="wg_inventory_product_country" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Wg Product Country</label>
+                </field>
+
+                <field id="run_manually" type="select" translate="label" sortOrder="10" showInDefault="1" showInWebsite="0" showInStore="0">
+                   <label>Run Manually</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>  
+                <field id="button_id" translate="label" type="button" sortOrder="11" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Run Now</label>
+                    <frontend_model>WePay\Inventory\Block\System\Config\RunNow</frontend_model>
+                    <depends>
+                        <field id="run_manually">1</field>
+                    </depends>
+                </field>
+            </group>
+            <group id="path_files" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="0">
+                <label>Path Files</label>
+                <field id="files" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Files</label>
+                    <comment>example : /var/www/html/Script/file.php</comment>
+                </field>
+            </group>
+            <group id="cron_one" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="0">
+                <label>Cron One Settings</label>
+                <field id="checkbox" translate="label" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Cron Run</label>
+                    <frontend_model>WePay\Inventory\Block\System\Config\CheckboxOne</frontend_model>
+                </field>
+                <field id="wg_inventory_cronone_variable" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Cron One Variable</label>
+                </field>
+                <field id="frequency" translate="label" type="select" sortOrder="2" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Frequency</label>
+                    <source_model>Magento\Cron\Model\Config\Source\Frequency</source_model>
+                    <backend_model>WePay\Inventory\Model\Config\CronConfigOne</backend_model>
+                    <comment>This cron setup Day Week Month for Cron One Variable</comment>
+                </field>
+                <field id="time" translate="label comment" sortOrder="3" type="time" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Start Time</label>
+                    <comment>This cron setup Time: Hours Minutes Seconds for Cron One Variable</comment>
+                </field>
+            </group>
+            <group id="cron_two" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="0">
+                <label>Cron Two Settings</label>
+                <field id="checkbox" translate="label" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Cron Run</label>
+                    <frontend_model>WePay\Inventory\Block\System\Config\CheckboxTwo</frontend_model>
+                </field>
+                <field id="wg_inventory_crontwo_variable" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Cron Two Variable</label>
+                </field>
+                <field id="frequency" translate="label" type="select" sortOrder="2" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Frequency</label>
+                    <source_model>Magento\Cron\Model\Config\Source\Frequency</source_model>
+                    <backend_model>WePay\Inventory\Model\Config\CronConfigTwo</backend_model>
+                    <comment>This cron setup Day Week Month for Cron Two Variable</comment>
+                </field>
+                <field id="time" translate="label comment" sortOrder="3" type="time" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Start Time</label>
+                    <comment>This cron setup Time: Hours Minutes Seconds for Cron Two Variable</comment>
+                </field>
+            </group>
+        </section>
+    </system>
+</config>

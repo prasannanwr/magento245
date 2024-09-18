@@ -1,0 +1,211 @@
+<?php
+/**
+ *
+ * @category : WePay
+ * @Package  : WePay_AdditionalCustomerAttributes
+ * @Author   : WePay Extensions <support@wepayextensions.com>
+ * @copyright Copyright 2018 © wepayextensions.com All right reserved
+ * @license https://wepayextensions.com/LICENSE.txt
+ */
+/* @var $block \WePay\AdditionalCustomerAttributes\Block\Attributes */
+?>
+<?php
+$attributes = $block->getAvailableAttributes(1, true);
+$allattributes = $attributes->getData();
+if (!empty($attributes)): ?>
+    <fieldset class="fieldset additional-customer-attributes">
+        <?php foreach ($attributes as $attribute) :?>
+            <?php $element = $block->getElement($attribute);?>
+            <?php if ($element): ?>
+                <?php /* @escapeNotVerified */ echo $element;?>
+                <?php if($attribute->getWepayDependable() && $attribute->getWepayDcode() != ""
+                 && array_search($attribute->getWepayDcode(), array_column( $allattributes, 'attribute_code'))): ?>
+                    <script type="text/javascript">
+                        require(['jquery'], function($){
+                            $(function() {
+                                function findOne(haystack, arr) {
+                                    if(haystack !== undefined) {
+                                        return arr.some(function (v) {
+                                            return haystack.indexOf(v) >= 0;
+                                        });
+                                    }
+                                    return false;
+                                };
+                                function checkDependency() {
+                                    var inputType = $('.field-<?php echo $attribute->getWepayDcode(); ?> [name^=wepay_<?php echo $attribute->getWepayDcode(); ?>]').attr('type');
+                                    var parentValues = '';
+                                   
+                                    if (inputType == 'checkbox' || inputType == 'radio') {
+                                        parentValues = new Array();
+                                        $.each($('.field-<?php echo $attribute->getWepayDcode(); ?> [acode=<?php echo $attribute->getWepayDcode(); ?>]:checked'), function() {
+                                          parentValues.push($(this).val());
+                                        });
+                                    } else {
+                                        parentValues = $('.field-<?php echo $attribute->getWepayDcode(); ?> [name=wepay_<?php echo $attribute->getWepayDcode(); ?>]').val();
+                                    }
+                                    var found = findOne(parentValues, watchValues) ? 'true' : 'false';
+                                    if(found == 'true') {
+                                        $('.field-<?php echo $attribute->getAttributeCode(); ?>').show();
+                                        $('.field-<?php echo $attribute->getAttributeCode(); ?> [acode=<?php echo $attribute->getAttributeCode(); ?>]').prop('disabled', false);
+                                        if($('#<?php echo $attribute->getAttributeCode(); ?>_value')){
+                                            $('#<?php echo $attribute->getAttributeCode(); ?>_value').prop('disabled', false);
+                                        }
+                                    } else {
+                                        $('.field-<?php echo $attribute->getAttributeCode(); ?>').hide();
+                                        $('.field-<?php echo $attribute->getAttributeCode(); ?> [acode=<?php echo $attribute->getAttributeCode(); ?>]').prop('disabled', true);
+                                        if($('#<?php echo $attribute->getAttributeCode(); ?>_value')){
+                                            $('#<?php echo $attribute->getAttributeCode(); ?>_value').prop('disabled', true);
+                                        }
+                                    }
+                                };
+                                var watchValues = <?php echo json_encode(explode(",", $attribute->getWepayDvalue())); ?>;
+                                
+                                if ($('.field-<?php echo $attribute->getWepayDcode(); ?> [acode=<?php echo $attribute->getWepayDcode(); ?>]')) {
+                                    if ($('.field-<?php echo $attribute->getWepayDcode(); ?> [acode=<?php echo $attribute->getWepayDcode(); ?>]') && $('.field-<?php echo $attribute->getWepayDcode(); ?> [acode=<?php echo $attribute->getWepayDcode(); ?>]').prop('disabled')) {
+                                        $('.field-<?php echo $attribute->getAttributeCode(); ?>').hide();
+                                        $('.field-<?php echo $attribute->getAttributeCode(); ?> [acode=<?php echo $attribute->getAttributeCode(); ?>]').prop('disabled', true);
+                                        if($('#<?php echo $attribute->getAttributeCode(); ?>_value')){
+                                            $('#<?php echo $attribute->getAttributeCode(); ?>_value').prop('disabled', true);
+                                        }
+                                    } else if ($('.field-<?php echo $attribute->getWepayDcode(); ?> [acode=<?php echo $attribute->getWepayDcode(); ?>]') && ($('.field-<?php echo $attribute->getWepayDcode(); ?> [acode=<?php echo $attribute->getWepayDcode(); ?>]').prop('disabled') || !$('.field-<?php echo $attribute->getWepayDcode(); ?> [acode=<?php echo $attribute->getWepayDcode(); ?>]').is(':visible'))) {
+                                        $('.field-<?php echo $attribute->getAttributeCode(); ?>').hide();
+                                        $('.field-<?php echo $attribute->getAttributeCode(); ?> [acode=<?php echo $attribute->getAttributeCode(); ?>]').prop('disabled', true);
+                                        if($('#<?php echo $attribute->getAttributeCode(); ?>_value')){
+                                            $('#<?php echo $attribute->getAttributeCode(); ?>_value').prop('disabled', true);
+                                        }
+                                    } else if ($('.field-<?php echo $attribute->getWepayDcode(); ?> [acode=<?php echo $attribute->getWepayDcode(); ?>]') && (!$('.field-<?php echo $attribute->getWepayDcode(); ?> [acode=<?php echo $attribute->getWepayDcode(); ?>]').prop('disabled') && $('.field-<?php echo $attribute->getWepayDcode(); ?> [acode=<?php echo $attribute->getWepayDcode(); ?>]').is(':visible'))) {
+                                        checkDependency();
+                                    }
+                                    $('.field-<?php echo $attribute->getWepayDcode(); ?> [acode=<?php echo $attribute->getWepayDcode(); ?>]').on('change click',function(){
+                                        checkDependency();
+                                    });
+                                    var observer<?php echo $attribute->getWepayDcode(); ?> = new MutationObserver(function(mutations) {
+                                        if ($('.field-<?php echo $attribute->getWepayDcode(); ?> [acode=<?php echo $attribute->getWepayDcode(); ?>]') && (!$('.field-<?php echo $attribute->getWepayDcode(); ?> [acode=<?php echo $attribute->getWepayDcode(); ?>]').prop('disabled') && $('.field-<?php echo $attribute->getWepayDcode(); ?> [acode=<?php echo $attribute->getWepayDcode(); ?>]').is(':visible'))) {
+                                            checkDependency();
+                                        } else {
+                                            $('.field-<?php echo $attribute->getAttributeCode(); ?>').hide();
+                                            $('.field-<?php echo $attribute->getAttributeCode(); ?> [acode=<?php echo $attribute->getAttributeCode(); ?>]').prop('disabled', true);
+                                            if($('#<?php echo $attribute->getAttributeCode(); ?>_value')){
+                                                $('#<?php echo $attribute->getAttributeCode(); ?>_value').prop('disabled', true);
+                                            }
+                                        }
+                                    });
+                                    var target<?php echo $attribute->getWepayDcode(); ?> = document.querySelector('.field-<?php echo $attribute->getWepayDcode(); ?> [acode=<?php echo $attribute->getWepayDcode(); ?>]');
+                                    observer<?php echo $attribute->getWepayDcode(); ?>.observe(target<?php echo $attribute->getWepayDcode(); ?>, {
+                                        attributes: true
+                                    });
+                                }
+                            });
+                        });
+                    </script>
+                <?php endif; ?>
+            <?php endif;?>
+        <?php endforeach;?>
+    </fieldset>
+    <script>
+        require([
+            'jquery',
+            'jquery/ui',
+            'jquery/validate',
+            'mage/translate'
+        ], function ($) {
+            $("input[type='file']").attr('form','customer_form');
+            $.validator.addMethod(
+                'validate-one-required-by-name-radio', function (v, elm) {
+                   var name = elm.name.replace(/([\\"])/g, '\\$1');
+                    selector = 'input[name="' + name + '"]:checked';
+                    if( $(selector).length > 0 ) {
+                        return true;
+                    }
+                    return false;
+                },
+                $.mage.__('Please select one of the options above.')
+            );
+            $.validator.addMethod(
+                'validate-one-required-by-name-checkbox', function (v, elm) {
+
+                    var name = elm.name.replace(/([\\"])/g, '\\$1');
+                    selector = 'input[name="' + name + '"]';
+                    selectorAttribute = $(selector).attr('attribute_code');
+                    mainSelector = 'input[attribute_code="' + selectorAttribute + '"]:checked';
+                    mainSender = selector = 'input[name="' + selectorAttribute + '"]';
+                    if( $(mainSelector).length > 0 ) {
+                        var allVals = [];
+                        $(mainSelector).each(function() {
+                            allVals.push($(this).val());
+                        });
+                        $(mainSender).val(allVals);
+                        return true;
+                    }
+                    return false;
+                },
+                $.mage.__('Please select atleast one option.')
+            );
+
+            $.validator.addMethod(
+                'validate-filesize', function (v, elm) {
+                    var allowed  = $(elm).attr('size');
+                    var maxSize = allowed * 1048576;
+                    if (navigator.appName == "Microsoft Internet Explorer") {
+                        if (elm.value) {
+                            var oas = new ActiveXObject("Scripting.FileSystemObject");
+                            var e = oas.getFile(elm.value);
+                            var size = e.size;
+                        }
+                    } else {
+                        if (elm.files[0] != undefined) {
+                            size = elm.files[0].size;
+                        }
+                    }
+                    if (size != undefined && size > maxSize) {
+                        return false;
+                    }
+                    return true;
+                }, $.mage.__('The file size should not exceed the mentioned size')
+            );
+            //Validate Image Extensions
+            $.validator.addMethod(
+                'validate-fileextensions', function (v, elm) {
+
+                    var extensions = $(elm).attr('types').split(",");
+                    if (!v) {
+                        return true;
+                    }
+                    with (elm) {
+                        var ext = value.substring(value.lastIndexOf('.') + 1);
+                        for (i = 0; i < extensions.length; i++) {
+                            if (ext == extensions[i]) {
+                                return true;
+                            }
+                        }
+                    }
+                    return false;
+                }, $.mage.__('Disallowed file type.')
+            );
+            //Validate Image Width and Height
+            $.validator.addMethod(
+                'validate-image-height-width', function (v, elm) {
+                    if (!v) {
+                        return true;
+                    }
+                    with (elm) {
+                        var file, img;
+                        if ((file = elm.files[0])) {
+                            img = new Image();
+                            img.onload = function () {
+                                var height = this.height,
+                                        width = this.width;
+                                if (height > 100 || width > 100) {
+                                    return false;
+                                }
+
+                                return true;
+                            };
+                        }
+                    }
+                    return false;
+                }, $.mage.__('Height and Width must not exceed 100px.')
+            );
+        });
+    </script>
+<?php endif; ?>
