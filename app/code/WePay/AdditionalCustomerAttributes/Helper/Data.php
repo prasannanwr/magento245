@@ -4,7 +4,7 @@
  * @category : WePay
  * @Package  : WePay_AdditionalCustomerAttributes
  * @Author   : WePay Extensions <support@wepayextensions.com>
- * @copyright Copyright 2018 © wepayextensions.com All right reserved
+ * @copyright Copyright 2018 Â© wepayextensions.com All right reserved
  * @license https://wepayextensions.com/LICENSE.txt
  */
 namespace WePay\AdditionalCustomerAttributes\Helper;
@@ -21,7 +21,7 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
      * @var \Magento\Customer\Model\Session
      */
     private $customerSession;
-        
+
     /**
      * Data constructor.
      *
@@ -41,7 +41,7 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
         $this->date     = $date;
         parent::__construct($context);
     }
-    
+
     /**
      * @param $config
      * @return mixed
@@ -53,7 +53,7 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
             \Magento\Store\Model\ScopeInterface::SCOPE_STORE
         );
     }//end getConfig()
-    
+
     /**
      * @return array
      */
@@ -66,7 +66,7 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
         $this->arrayMergeRecursiveValues($data, $exitingValues);
         $this->checkoutSession->setCoaf($exitingValues);
     }//end setCoafFields()
-    
+
     /**
      * @return void
      */
@@ -106,7 +106,7 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
     {
         return $this->getConfig('additionalcustomerattributes/general/active');
     }//end getConfig()
-    
+
     /**
      * @return boolean
      */

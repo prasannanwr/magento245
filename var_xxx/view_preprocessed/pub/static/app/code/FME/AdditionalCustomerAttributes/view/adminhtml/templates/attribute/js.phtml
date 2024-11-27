@@ -1,0 +1,7 @@
+<?php /** * * @category : FME * @Package : FME_AdditionalCustomerAttributes * @Author : FME Extensions <support@fmeextensions.com> * @copyright Copyright 2018 © fmeextensions.com All right reserved * @license https://fmeextensions.com/LICENSE.txt */ ?> <script type="text/x-magento-init">
+    {
+        "*": {
+            "additionalCustomerAttributes": {
+                "hiddenFields": <?php /* @escapeNotVerified */ echo json_encode($this->helper('Magento\Catalog\Helper\Data')->getAttributeHiddenFields()); ?> }
+        }
+    }</script>

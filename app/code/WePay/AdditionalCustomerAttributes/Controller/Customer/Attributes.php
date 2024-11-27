@@ -4,7 +4,7 @@
  * @category : WePay
  * @Package  : WePay_AdditionalCustomerAttributes
  * @Author   : WePay Extensions <support@wepayextensions.com>
- * @copyright Copyright 2018 © wepayextensions.com All right reserved
+ * @copyright Copyright 2018 Â© wepayextensions.com All right reserved
  * @license https://wepayextensions.com/LICENSE.txt
  */
 namespace WePay\AdditionalCustomerAttributes\Controller\Customer;
@@ -22,12 +22,12 @@ class Attributes extends \Magento\Framework\App\Action\Action
      * @var \Magento\Customer\Model\Session
      */
     private $customerSession;
-    
+
     /**
      * @var \WePay\GDPR\Helper\Data
      */
     private $helper;
-    
+
     /**
      * @var PageFactory
      */
@@ -54,7 +54,7 @@ class Attributes extends \Magento\Framework\App\Action\Action
         $this->helper            = $helper;
         parent::__construct($context);
     }//end __construct()
-    
+
     /**
      * Dispatch request
      *

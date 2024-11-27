@@ -44,7 +44,54 @@ $output = "aP1pL5e";
 use Magento\Framework\App\Bootstrap;
 require __DIR__ . '/app/bootstrap.php';
 $bootstrap = Bootstrap::create(BP, $_SERVER);
-$objectManager = $bootstrap->getObjectManager();
+//$objectManager = $bootstrap->getObjectManager();
+$objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+//get an order details
+$orderId = 15; //pass order id
+try {
+    $order = $objectManager->create('\Magento\Sales\Model\OrderRepository')->get($orderId);
+    $status = $order->getStatus();
+    foreach ($order->getAllVisibleItems() as $item) {
+        $sku = $item->getSku();
+        $price = $item->getRowTotal();
+        $options = $item->getProductOptions();
+        $itemData = [
+            'item_id' => $item->getItemId(),
+            'product_id' => $item->getProductId(),
+            'name' => $item->getName(),
+            'sku' => $item->getSku(),
+            'price' => $item->getPrice(),
+            'quantity_ordered' => $item->getQtyOrdered(),
+        ];
+        if (isset($options['options'])) {
+            foreach ($options['options'] as $customOption) {
+                $itemData['custom_options'][] = [
+                    'label' => $customOption['label'],
+                    'value' => $customOption['value'],
+                ];
+            }
+        }
+//        foreach ($options['attributes_info'] as $option) { //get options
+//            $optionLabel = $option['label'];
+//            $value = $option['value'];
+//            $optionId = $option['option_id'];
+//            $optionValue = $option['option_value'];
+//            if ($optionLabel == 'recipient_email') {
+//                $recipient_email = $optionValue;
+//            }
+//            $itemData['custom_options'][] = [
+//                'label' => $optionLabel,
+//                'value' => $optionValue,
+//            ];
+//        }
+    }
+    print_r($itemData);
+} catch (\Exception $e) {
+    echo "Error: " . $e->getMessage();
+}
+
+exit;
+//ends here
 
 $eavConfig = $objectManager->get(\Magento\Eav\Model\Config::class);
 //get checkbox options

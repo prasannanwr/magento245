@@ -4,9 +4,9 @@
  *
  * @category : WePay
  * @Package  : WePay_AdditionalCustomerAttributes
- * @Author   : WePay Extensions <support@wepayextensions.com>
- * @copyright Copyright 2018 © wepayextensions.com All right reserved
- * @license https://wepayextensions.com/LICENSE.txt
+ * @Author   : WePay Extensions <support@WePayextensions.com>
+ * @copyright Copyright 2018 © WePayextensions.com All right reserved
+ * @license https://WePayextensions.com/LICENSE.txt
  */
  -->
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Backend:etc/menu.xsd">
@@ -16,12 +16,18 @@
                 module="Magento_Backend" 
                 sortOrder="70" 
                 resource="WePay_Extensions::wepayextensions"/>
+        <add id="WePay_AdditionalCustomerAttributes::fields" 
+             title="Registration Fields" 
+             module="WePay_AdditionalCustomerAttributes" 
+             sortOrder="10" 
+             parent="WePay_Extensions::wepayextensions" 
+             resource="WePay_AdditionalCustomerAttributes::fields"/>
         <add id="WePay_AdditionalCustomerAttributes::attributes"
-            title="Additional Customer Registration Fields"
+            title="Manage Fields"
             translate="title"
             module="WePay_AdditionalCustomerAttributes"
             sortOrder="30"
-            parent="WePay_Extensions::wepayextensions"
+            parent="WePay_AdditionalCustomerAttributes::fields"
             action="additionalcustomerattributes/attribute/"
             resource="WePay_AdditionalCustomerAttributes::attributes"/>
     </menu>

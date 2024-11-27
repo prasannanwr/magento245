@@ -1,0 +1,48 @@
+<?php /** * * @category : FME * @Package : FME_AdditionalCustomerAttributes * @Author : FME Extensions <support@fmeextensions.com> * @copyright Copyright 2018 © fmeextensions.com All right reserved * @license https://fmeextensions.com/LICENSE.txt */ ?> <?php $attribute = $block->getCurrentAttribute(); $fmeDid = $attribute->getData('fme_did')!=0?$attribute->getData('fme_did'):''; $fmeDvalue = $attribute->getData('fme_dvalue') != null?$attribute->getData('fme_dvalue'):''; ?> <fieldset class="fieldset" id="guardianOptions"><legend class="legend"><span><?php echo $block->escapeHtml(__('Select Guardian Options (Values of the Guardian Attribute)'))?></span></legend><div id="manage-guardianoptions-panel" data-index="attribute_guardianoptions_select_container"><table class="admin__control-table" data-index="attribute_guardianoptions_select"><tr><td id="fme_dvalue_td"><!-- <select name="fme_dvalue[]" multiple><option value=""> Please Selection Options</option></select> --></td></tr></table><input type="hidden" id="fme_dcode" name="fme_dcode" value="<?php echo $attribute->getFmeDcode();?>"><input type="hidden" id="fme_dpath" name="fme_dpath" value="<?php echo $attribute->getFmeDpath();?>"></div><script>
+        require(['jquery'], function($){
+            $(function() {
+                function sendRequest(requestMethod) {
+                    $.ajax({
+                        method: requestMethod,
+                        url: "<?php  echo $block->getAjaxUrl(); ?>",
+                        data: { id: $('#fme_did').val(), oldid: '<?php echo $fmeDid; ?>', oldvalue: '<?php echo $fmeDvalue; ?>'},
+                        dataType: "json",
+                        showLoader: true
+                    })
+                    .done(function( response ) {
+                        $('#fme_dvalue_td').html(response.html);
+                        $('#fme_dcode').val(response.attribute_code);
+                        $('#fme_dpath').val(response.fme_dpath);
+                    });
+                }
+
+                $('#guardianOptions').hide();
+                if($('#fme_dependable') && $('#fme_dependable').val() == "1") {
+                    $('#guardianOptions').show();
+                    $('#fme_dvalue').addClass('required-entry');
+                    sendRequest("GET");
+                }
+                $('#fme_dependable').change(function(){
+                    if( $('#fme_dependable').val() == 1) {
+                        $('#guardianOptions').show();
+                        $('#fme_dvalue').addClass('required-entry');
+                        sendRequest("POST");
+                    } else {
+                        $('#guardianOptions').hide();
+                        $('#fme_dvalue').removeClass('required-entry');
+                    }
+                });
+                if ($('#fme_did')) {
+                    $('#fme_did').change(function(){
+                        if( $('#fme_dependable').val() != "") {
+                            $('#guardianOptions').show();
+                            $('#fme_dvalue').addClass('required-entry');
+                            sendRequest("POST");
+                        } else {
+                            $('#guardianOptions').hide();
+                            $('#fme_dvalue').removeClass('required-entry');
+                        }
+                    });
+                }
+            });
+        });</script></fieldset>

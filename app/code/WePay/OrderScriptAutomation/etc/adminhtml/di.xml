@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <type name="\Magento\Sales\Block\Adminhtml\Order\View">
+        <plugin name="WePay_OrderScriptAutomation::manualButton" type="WePay\OrderScriptAutomation\Plugin\ManualButton" />
+    </type>
+    <type name="\Magento\Customer\Block\Adminhtml\Group\Edit\Form">
+        <plugin name="WePay_OrderScriptAutomation::setMode" type="WePay\OrderScriptAutomation\Plugin\Block\Adminhtml\Group\Edit\Form" />
+    </type>
+    <type name="\Magento\Customer\Api\GroupRepositoryInterface">
+<!--        <plugin name="WePay_OrderScriptAutomation::saveCustomAttribute" type="WePay\OrderScriptAutomation\Plugin\SaveCustomAttribute"/>-->
+        <plugin name="WePay_OrderScriptAutomation::saveCustomerGroupMode" type="WePay\OrderScriptAutomation\Plugin\SaveCustomerGroupMode"/>
+    </type>
+</config>
