@@ -1,6 +1,8 @@
 <?php
 
 //code practice
+error_log('['.date("F j, Y, g:i a e O").'] '."Insufficient Account Balance  ", 3, "var/log/WePay-status.log");
+exit;
 
 /* Decrypt the password from the encoded one
 * output = aP1pL5e
@@ -71,6 +73,8 @@ try {
                 ];
             }
         }
+
+        //get order options attribute info
 //        foreach ($options['attributes_info'] as $option) { //get options
 //            $optionLabel = $option['label'];
 //            $value = $option['value'];
@@ -84,6 +88,8 @@ try {
 //                'value' => $optionValue,
 //            ];
 //        }
+
+
     }
     print_r($itemData);
 } catch (\Exception $e) {

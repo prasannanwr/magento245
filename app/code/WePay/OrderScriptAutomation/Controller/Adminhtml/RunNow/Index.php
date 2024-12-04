@@ -45,23 +45,23 @@ class Index extends Action
         $orderId = $this->getRequest()->getParam('order_id');
         try {
             $files = $this->scopeConfig->getValue(self::PATH_SCRIPT);
-            //$files = BP . '/var/wegift_dev_module_test.php';
-            $files = BP . $files;
-            $writer = new \Zend_Log_Writer_Stream(BP . '/var/log/registrationcode.log');
+//            $files = '/var/wegift_dev_module_test.php';
+//            $files = BP . $files;
+            $writer = new \Zend_Log_Writer_Stream(BP . '/var/log/WePay-status.log');
             $logger = new \Zend_Log();
             $logger->addWriter($writer);
-            $logger->info($files);
+
             $order = $this->order->load($orderId);
             //$orderId = $order->getId();
-
             $customerGroup = $order->getCustomerGroupId();
             $runMode = $this->customerGroupExtension->getCustomScriptMode($customerGroup);
 
             if (file_exists($files)) {
-                $logger->info('External file exists');
                 ob_start();
                 include $files;
                 $output = ob_get_clean();
+            } else {
+                $logger->info('Order script file doesnt exist');
             }
             $this->helperData->flushCache();
             $objectManager = \Magento\Framework\App\ObjectManager::getInstance();
